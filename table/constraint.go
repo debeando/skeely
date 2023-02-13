@@ -29,7 +29,7 @@ func (c *Constraint) Parser(r string) error {
 
 func (c *Constraint) GetName() {
 	ex := `\s{2}CONSTRAINT \x60(?P<Name>[0-9,a-z,A-Z$_\.]+)\x60\s`
-	c.Name = findMatchOne(ex, c.Raw)
+	c.Name = findMatchOne(ex, c.Raw, 1)
 }
 
 func (c *Constraint) GetDelete() {
@@ -42,15 +42,15 @@ func (c *Constraint) GetUpdate() {
 
 func (c *Constraint) GetForeignKeys() {
 	ex := `\s{2}CONSTRAINT\s\x60[0-9,a-z,A-Z$_\.]+\x60\sFOREIGN KEY\s(?:\((?P<ForeignKeys>\x60.+\x60)\))\sREFERENCES.*`
-	c.ForeignKeys = stringToArray(findMatchOne(ex, c.Raw))
+	c.ForeignKeys = stringToArray(findMatchOne(ex, c.Raw, 1))
 }
 
 func (c *Constraint) GetReferenceTable() {
 	ex := `\sREFERENCES\s\x60(?P<Table>[0-9,a-z,A-Z$_\.]+)?\x60\s`
-	c.ReferenceTable = findMatchOne(ex, c.Raw)
+	c.ReferenceTable = findMatchOne(ex, c.Raw, 1)
 }
 
 func (c *Constraint) GetReferenceFields() {
 	ex := `\sREFERENCES\s\x60.*\s\((?P<Fields>\x60.*\x60)\)`
-	c.ReferenceFields = stringToArray(findMatchOne(ex, c.Raw))
+	c.ReferenceFields = stringToArray(findMatchOne(ex, c.Raw, 1))
 }

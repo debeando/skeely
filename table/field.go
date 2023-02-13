@@ -39,7 +39,7 @@ func (f *Field) Parser(r string) error {
 
 func (f *Field) GetName() {
 	ex := `\s{2}\x60(?P<Field>[0-9,a-z,A-Z$_\.]+)\x60`
-	f.Name = findMatchOne(ex, f.Raw)
+	f.Name = findMatchOne(ex, f.Raw, 1)
 }
 
 func (f *Field) GetUnsigned() {
@@ -60,30 +60,30 @@ func (f *Field) GetNotNull() {
 
 func (f *Field) GetType() {
 	ex := `\s{2}\x60[0-9,a-z,A-Z$_\.]+\x60\s(?P<Type>\w+)`
-	f.Type = findMatchOne(ex, f.Raw)
+	f.Type = findMatchOne(ex, f.Raw, 1)
 }
 
 func (f *Field) GetLength() {
 	ex := `\s{2}\x60[0-9,a-z,A-Z$_\.]+\x60\s\w+\((?P<Length>\d+)\)`
-	f.Length = stringToInt(findMatchOne(ex, f.Raw))
+	f.Length = stringToInt(findMatchOne(ex, f.Raw, 1))
 }
 
 func (f *Field) GetEnum() {
 	ex := `\s{2}\x60[0-9,a-z,A-Z$_\.]+\x60\s\w+(?:\((?P<List>'.+')\))`
-	f.Enum = stringToArray(findMatchOne(ex, f.Raw))
+	f.Enum = stringToArray(findMatchOne(ex, f.Raw, 1))
 }
 
 func (f *Field) GetComment() {
 	ex := `\sCOMMENT\s(?P<Comment>\w+|'(.*?)')[\s,]?`
-	f.Comment = findMatchOne(ex, f.Raw)
+	f.Comment = findMatchOne(ex, f.Raw, 2)
 }
 
 func (f *Field) GetCollate() {
 	ex := `\sCOLLATE\s(?P<Collate>\w+|'(.*?)')[\s,]?`
-	f.Collate = findMatchOne(ex, f.Raw)
+	f.Collate = findMatchOne(ex, f.Raw, 2)
 }
 
 func (f *Field) GetDefault() {
 	ex := `\sDEFAULT\s(?P<Default>\w+|'(.*?)')[\s,]?`
-	f.Default = findMatchOne(ex, f.Raw)
+	f.Default = findMatchOne(ex, f.Raw, 2)
 }

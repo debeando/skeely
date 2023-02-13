@@ -26,14 +26,12 @@ func find(e, r string) [][]string {
 	return regexp.MustCompile(e).FindAllStringSubmatch(r, -1)
 }
 
-func findMatchOne(e, r string) string {
+func findMatchOne(e, r string, l int) string {
 	re := regexp.MustCompile(e)
 	match := re.FindStringSubmatch(r)
-
-	for i, name := range re.SubexpNames() {
-		if len(match) > 0 && i != 0 && name != "" {
-			return match[i]
-		}
+	
+	if len(match) > 0 {
+		return match[l]
 	}
 
 	return ""
