@@ -89,11 +89,13 @@ func (t *Table) GetKeys() {
 }
 
 func (t *Table) GetConstraints() {
-	ex := `\s{2}CONSTRAINT \x60(?P<Name>[0-9,a-z,A-Z$_\.]+)\x60\s(?P<Properties>.*)`
+	ex := `\s{2}(?P<Constraint>CONSTRAINT.*)`
 	for _, item := range find(ex, t.Raw) {
-		t.Constraints = append(t.Constraints, Constraint{
-			Name: item[1],
-		})
+		if len(item) > 0 {
+			c := Constraint{}
+			c.Parser(item[0])
+			t.Constraints = append(t.Constraints, c)
+		}
 	}
 }
 
