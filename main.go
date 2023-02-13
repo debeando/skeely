@@ -1,14 +1,7 @@
-// TODO:
-// =====
-// - Hacer una función regexFind() que retorne el valor y refactorizar para daptar a esto.
-//   Así se simplifica la expresion regular que hay para la tabla.
-// - Profundisar el parser fields.
-// - Profundisar el parser constraints.
-// - Hacer un stdout en formato tabla con el resumen de todas las tablas analizadas.
-
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -37,24 +30,14 @@ func main() {
 		help(1)
 	}
 
-	directory.Explore(*fPath, func(content []byte) {
+	directory.Explore(*fPath, func(file string) {
 		t := table.Table{}
-		if ! t.Parser(content) {
+		if t.Parser(file) != nil {
 			return
 		}
 
-		fmt.Println("======")
-		fmt.Println("Table:", t.Name)
-		fmt.Printf("Fields: %+v\n", t.Fields)
-		fmt.Println("Engine:", t.Engine)
-		fmt.Println("Charset:", t.Charset)
-		fmt.Println("Collate:", t.Collate)
-		fmt.Println("RowFormat:", t.RowFormat)
-		fmt.Println("Comment:", t.Comment)
-		fmt.Printf("PrimaryKey: %+v\n", t.PrimaryKey)
-		fmt.Printf("UniqueKeys: %+v\n", t.UniqueKeys)
-		fmt.Printf("Keys: %+v\n", t.Keys)
-		fmt.Printf("Constraints: %+v\n", t.Constraints)
+		out, _ := json.Marshal(t)
+		fmt.Printf(string(out))
 	})
 }
 

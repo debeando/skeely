@@ -5,8 +5,9 @@ import (
 	"os"
 )
 
-func ReadFile(filePath string) ([]byte, error) {
-	return ioutil.ReadFile(filePath)
+func ReadFile(filePath string) (string, error) {
+	body, err := ioutil.ReadFile(filePath)
+	return string(body), err
 }
 
 func ReadDir(path string) (files []string) {
@@ -20,7 +21,7 @@ func ReadDir(path string) (files []string) {
 	return files
 }
 
-func Explore(path string, doFile func(content []byte)) {
+func Explore(path string, doFile func(content string)) {
 	if IsDir(path) {
 		for _, file := range ReadDir(path) {
 			data, _ := ReadFile(file)

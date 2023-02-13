@@ -1,9 +1,3 @@
 # MySQL DDL Lint
 
-Esto debería ser mysql-ddl-lint
-
-Linting is the process of running a program that will analyse code for potential errors.
-
 Linting is the process of checking the source code for Programmatic as well as Stylistic errors. This is most helpful in identifying some common and uncommon mistakes that are made during coding.
-
-https://en.wikipedia.org/wiki/Lint_%28software%29
