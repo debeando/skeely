@@ -69,22 +69,24 @@ func (t *Table) GetPrimaryKey() {
 }
 
 func (t *Table) GetUniqueKeys() {
-	ex := `\s{2}UNIQUE KEY \x60(?P<Name>[0-9,a-z,A-Z$_\.]+)\x60 \((?P<Fields>(\x60.+\x60(, )?)+)\)`
+	ex := `\s{2}UNIQUE\sKEY.*`
 	for _, item := range find(ex, t.Raw) {
-		t.UniqueKeys = append(t.UniqueKeys, Key{
-			Name: item[1],
-			Fields: stringToArray(item[2]),
-		})
+		if len(item) > 0 {
+			c := Key{}
+			c.Parser(item[0])
+			t.Keys = append(t.Keys, c)
+		}
 	}
 }
 
 func (t *Table) GetKeys() {
-	ex := `\s{2}KEY \x60(?P<Name>[0-9,a-z,A-Z$_\.]+)\x60 \((?P<Fields>(\x60.+\x60(, )?)+)\)`
+	ex := `\s{2}KEY\s\x60.*`
 	for _, item := range find(ex, t.Raw) {
-		t.Keys = append(t.Keys, Key{
-			Name: item[1],
-			Fields: stringToArray(item[2]),
-		})
+		if len(item) > 0 {
+			c := Key{}
+			c.Parser(item[0])
+			t.Keys = append(t.Keys, c)
+		}
 	}
 }
 
