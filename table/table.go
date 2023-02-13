@@ -1,22 +1,22 @@
 package table
 
 type Table struct {
-	Charset string
-	Collate string
-	Comment string
+	Charset     string
+	Collate     string
+	Comment     string
 	Constraints []Constraint
-	Engine string
-	Fields []Field
-	Keys []Key
-	Name string
-	PrimaryKey []string
-	Raw string `json:"-"`
-	RowFormat string
-	UniqueKeys []Key
+	Engine      string
+	Fields      []Field
+	Keys        []Key
+	Name        string
+	PrimaryKey  []string
+	Raw         string `json:"-"`
+	RowFormat   string
+	UniqueKeys  []Key
 }
 
 func (t *Table) Parser(r string) error {
-	(*t) = Table { Raw: r }
+	(*t) = Table{Raw: r}
 
 	t.GetCharset()
 	t.GetCollate()

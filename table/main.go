@@ -29,7 +29,7 @@ func find(e, r string) [][]string {
 func findMatchOne(e, r string, l int) string {
 	re := regexp.MustCompile(e)
 	match := re.FindStringSubmatch(r)
-	
+
 	if len(match) > 0 {
 		return match[l]
 	}

@@ -13,8 +13,8 @@ func ReadFile(filePath string) (string, error) {
 func ReadDir(path string) (files []string) {
 	filesInDir, _ := ioutil.ReadDir(path)
 	for _, file := range filesInDir {
-		if ! file.IsDir() {
-			files = append(files, path + file.Name())
+		if !file.IsDir() {
+			files = append(files, path+file.Name())
 		}
 	}
 

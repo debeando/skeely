@@ -2,12 +2,12 @@ package table
 
 type Key struct {
 	Fields []string
-	Name string
-	Raw string `json:"-"`
+	Name   string
+	Raw    string `json:"-"`
 }
 
 func (k *Key) Parser(r string) error {
-	(*k) = Key { Raw: r }
+	(*k) = Key{Raw: r}
 
 	k.GetName()
 	k.GetFields()

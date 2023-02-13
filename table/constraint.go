@@ -1,21 +1,21 @@
 package table
 
-import(
+import (
 	"strings"
 )
 
 type Constraint struct {
-	Delete bool
-	ForeignKeys []string
-	Name string
-	Raw string `json:"-"`
-	ReferenceTable string
+	Delete          bool
+	ForeignKeys     []string
+	Name            string
+	Raw             string `json:"-"`
+	ReferenceTable  string
 	ReferenceFields []string
-	Update bool
+	Update          bool
 }
 
 func (c *Constraint) Parser(r string) error {
-	(*c) = Constraint { Raw: r }
+	(*c) = Constraint{Raw: r}
 
 	c.GetDelete()
 	c.GetName()

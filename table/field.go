@@ -1,26 +1,26 @@
 package table
 
-import(
+import (
 	"strings"
 )
 
 type Field struct {
 	AutoIncrement bool
-	Collate string
-	Comment string
-	Default string
-	Enum []string
-	Length int
-	Name string
-	NotNull bool
-	Raw string `json:"-"`
-	Type string
-	Unsigned bool
-	ZeroFill bool
+	Collate       string
+	Comment       string
+	Default       string
+	Enum          []string
+	Length        int
+	Name          string
+	NotNull       bool
+	Raw           string `json:"-"`
+	Type          string
+	Unsigned      bool
+	ZeroFill      bool
 }
 
 func (f *Field) Parser(r string) error {
-	(*f) = Field { Raw: r }
+	(*f) = Field{Raw: r}
 
 	f.GetAutoIncrement()
 	f.GetCollate()
