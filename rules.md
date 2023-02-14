@@ -13,10 +13,11 @@ Interesante sería a futuro que se pueda conectarse al mysql y validar:
 
 ## 100 File
 
-- **101:** Should to be have .sql extension.
-- **102:** Imposible to parser.
-- **103:** Tiene \n EOF?
-- **104:** Is in UTF8 format.
+- **101:** Right permissions.
+- **102:** Should to be have .sql extension.
+- **103:** Imposible to parser.
+- **104:** Tiene \n EOF?
+- **105:** Is in UTF8 format.
 
 ## 200 Object Name
 

@@ -1,0 +1,102 @@
+// func (t *Table) parserFields() {
+// 	for _, item := range find(`\s{2}(?P<Field>\x60.*)$`, t.RawString()) {
+		
+// 		attributes := item[2]
+// 		fmt.Println(attributes)
+// 		// unsigned := strings.Contains(attributes, "UNSIGNED")
+// 		// not_null := strings.Contains(attributes, "NOT NULL")
+// 		// auto_increment := strings.Contains(attributes, "AUTO_INCREMENT")
+// 		// zero_fill := strings.Contains(attributes, "ZEROFILL")
+
+// 		// Properties / Attributes:
+// 		// - DEFAULT | DEFAULT '0' | DEFAULT NULL | DEFAULT 'property'
+// 		// - COMMENT
+// 		// - ENUM
+
+// 		// var myExp = regexp.MustCompile()
+// 		// match := myExp.FindStringSubmatch(attributes)
+// 		// for i, name := range myExp.SubexpNames() {
+// 			// fmt.Println(i, name, match)
+// 		// }
+
+// 		// fmt.Println(parserDataType(attributes))
+
+// 		// dataType, length, list := parserDataType(attributes)
+// 		// default_value := parserAttributeValue("DEFAULT", attributes)
+// 		// comment_value := parserAttributeValue("COMMENT", attributes)
+
+// 		// `\x60\s(?P<DataType>\w+)(?P<Length>\(\d+\))?[\s,]?`
+// 		// `\x60\s(?P<DataType>\w+)(?:\((?P<List>'.+')\))?[\s,]?`
+// 		// 
+
+// 		// Data types:
+// 		// - BIT
+// 		// - TINYINT
+// 		// - BOOL | BOOLEAN
+// 		// - SMALLINT
+// 		// - MEDIUMINT
+// 		// - INT
+// 		// - BIGINT
+// 		// - NUMERIC
+// 		// - DECIMAL
+// 		// - FLOAT
+// 		// - DOUBLE
+// 		// - DATE
+// 		// - TIME
+// 		// - DATETIME
+// 		// - TIMESTAMP
+// 		// - YEAR
+// 		// - CHAR
+// 		// - VARCHAR
+// 		// - BINARY
+// 		// - VARBINARY
+// 		// - BLOB
+// 		// - TEXT
+// 		// - SET
+// 		// - JSON
+
+// 		// Type: dataType,
+// 		// Length: length,
+// 		// Enum: list,
+// 		// Default: default_value,
+// 		// Comment: comment_value,
+
+// 		f := Field{}
+// 		f.Parser(attributes)
+// 		t.Fields = append(t.Fields, f)
+// 	}
+// }
+
+
+`a` VARCHAR(255) DEFAULT NULL COMMENT 'Optional Button Link',
+`b` SMALLINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Delay to wait',
+`c` tinyint DEFAULT '0'
+`d` INT DEFAULT NULL,
+`e` CHAR(8) DEFAULT 'insert',
+`f` TEXT NOT NULL DEFAULT '',
+`g` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`h` ENUM('A','B') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+`i` ENUM('A','B','C','D','E') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'E',
+
+
+`a` VARCHAR(255) DEFAULT NULL COMMENT 'Optional Button Link',       // parseAttribute("DEFAULT", nil) -> NULL
+`b` SMALLINT UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Delay to wait',
+`c` tinyint DEFAULT '0'                                             // parseAttribute("DEFAULT", "'") -> 0
+`d` INT DEFAULT NULL,
+`e` CHAR(8) DEFAULT 'insert',
+`f` TEXT NOT NULL DEFAULT '',
+`g` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,                    // parseAttribute("DEFAULT", nil) -> CURRENT_TIMESTAMP
+
+
+
+between () ''
+
+func parserAttribute(name, between) (value)
+puede haber uno que retorne val o array
+
+func parserDataType()
+	puede que este en ` (x) o no
+
+\x60\s(?P<DataType>\w+)(?P<Length>\(\d+\))?[\s,]?
+\x60\s(?P<DataType>\w+)(?:\((?P<List>'.+')\))?[\s,]?
+\sDEFAULT\s(?P<Default>\w+|'(.*?)')[\s,]?

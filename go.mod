@@ -1,3 +1,3 @@
-module mysql-ddl-checker
+module mysql-ddl-lint
 
 go 1.19

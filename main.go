@@ -1,17 +1,19 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
 
-	"mysql-ddl-checker/directory"
-	"mysql-ddl-checker/table"
+	"mysql-ddl-lint/directory"
+	"mysql-ddl-lint/table"
+	"mysql-ddl-lint/plugins/registry"
+
+	_ "mysql-ddl-lint/plugins"
 )
 
 const VERSION string = "1.0.0"
-const USAGE = `mysql-ddl-checker %s.`
+const USAGE = `mysql-ddl-lint %s.`
 
 func main() {
 	fHelp := flag.Bool("help", false, "")
@@ -30,14 +32,23 @@ func main() {
 		help(1)
 	}
 
-	directory.Explore(*fPath, func(file string) {
+	directory.Explore(*fPath, func(fileName, fileContent string) {
+		fmt.Println("--> Lint file:", fileName)
+
 		t := table.Table{}
-		if t.Parser(file) != nil {
+		if t.Parser(fileContent) != nil {
 			return
 		}
 
-		out, _ := json.Marshal(t)
-		fmt.Printf(string(out))
+		for key := range registry.Plugins {
+			if creator, ok := registry.Plugins[key]; ok {
+				plugin := creator()
+				plugin.Run(registry.Property{
+					FilePath: fileName,
+					Table: t,
+				})
+			}
+		}
 	})
 }
 

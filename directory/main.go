@@ -21,15 +21,15 @@ func ReadDir(path string) (files []string) {
 	return files
 }
 
-func Explore(path string, doFile func(content string)) {
+func Explore(path string, doFile func(fileName, fileContent string)) {
 	if IsDir(path) {
 		for _, file := range ReadDir(path) {
 			data, _ := ReadFile(file)
-			doFile(data)
+			doFile(file, data)
 		}
 	} else {
 		data, _ := ReadFile(path)
-		doFile(data)
+		doFile(path, data)
 	}
 }
 
