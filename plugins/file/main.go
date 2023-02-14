@@ -14,7 +14,7 @@ type File struct {
 }
 
 func init() {
-	registry.Add("File", func() registry.Method{ return &File{} })
+	registry.Add("File", func() registry.Method { return &File{} })
 }
 
 func (f *File) Run(p registry.Property) {
@@ -28,9 +28,9 @@ func (f *File) Run(p registry.Property) {
 }
 
 func (f *File) NoEmpty() {
-    if len(f.Property.Table.Raw) == 0 {
-        fmt.Println("[101] File is empty.")
-    }
+	if len(f.Property.Table.Raw) == 0 {
+		fmt.Println("[101] File is empty.")
+	}
 }
 
 func (f *File) WithExtension() {

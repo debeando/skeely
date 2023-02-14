@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"mysql-ddl-lint/directory"
-	"mysql-ddl-lint/table"
 	"mysql-ddl-lint/plugins/registry"
+	"mysql-ddl-lint/table"
 
 	_ "mysql-ddl-lint/plugins"
 )
@@ -45,7 +45,7 @@ func main() {
 				plugin := creator()
 				plugin.Run(registry.Property{
 					FilePath: fileName,
-					Table: t,
+					Table:    t,
 				})
 			}
 		}
