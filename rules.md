@@ -43,6 +43,7 @@ Interesante sería a futuro que se pueda conectarse al mysql y validar:
 - warn: Aconsejar de no usar datetime sino timestamp
 - warn: que hay null
 - warn: que no hay valor por defecto.
+- y si es menor a 50 que sea char.
 
 ## 500 Primary Key
 
@@ -57,6 +58,7 @@ Interesante sería a futuro que se pueda conectarse al mysql y validar:
 - Error: Que no haya cascade.
 - Sugerir que sean \_id.
 - Sugerir nombres valido.
+- Que el nombre termine en \_uq
 
 ## 700 Indices
 
@@ -64,4 +66,4 @@ Interesante sería a futuro que se pueda conectarse al mysql y validar:
 - Error: No confundir con unique key.
 - Error: Revisar indice correcto para texto.
 - Sugerir nombres valido.
-- Indicar de cambiar el tipo de dato de un indice si es datime.
+- Que el nombre termine en \_id
