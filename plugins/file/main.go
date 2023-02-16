@@ -28,7 +28,7 @@ func (f *File) Run(p registry.Property) {
 	f.EndWithNewLine()
 
 	for _, message := range f.Property.Messages {
-		fmt.Println(fmt.Sprintf("[%d] %s", f.Property.Code+message.Code, message.Message))
+		fmt.Println(fmt.Sprintf("- [%d] %s", f.Property.Code + message.Code, message.Message))
 	}
 }
 

@@ -1,6 +1,8 @@
 package primary_key
 
 import (
+	"fmt"
+
 	"mysql-ddl-lint/plugins/registry"
 )
 
@@ -15,11 +17,24 @@ func init() {
 func (pk *PrimaryKey) Run(p registry.Property) {
 	pk.Property = p
 	pk.Property.Code = 500
+
+	pk.Empty()
+
+	for _, message := range pk.Property.Messages {
+		fmt.Println(fmt.Sprintf("- [%d] %s", pk.Property.Code + message.Code, message.Message))
+	}
 }
 
-// - 501 No hay primary key.
-// - 502 El nombre contiene puntos.
-// - 503 No debe ser capital leter.
+func (pk *PrimaryKey) AddMessage(id int, m string) {
+	pk.Property.Messages = append(pk.Property.Messages, registry.Message{Code: id, Message: m})
+}
+
+func (pk *PrimaryKey) Empty() {
+	if len(pk.Property.Table.PrimaryKey) == 0 {
+		pk.AddMessage(1, "Table no have Primary Key.")
+	}
+}
+
 // - 504 El primary key debe ser not null.
 // - 505 El primary key debe ser big int si es cualquiera numerico o char.
 // - 506 El primary key debe ser char sino es bigint.

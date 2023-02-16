@@ -30,7 +30,7 @@ func (f *Field) Run(p registry.Property) {
 	f.HaveDatetime()
 
 	for _, message := range f.Property.Messages {
-		fmt.Println(fmt.Sprintf("[%d] %s", f.Property.Code+message.Code, message.Message))
+		fmt.Println(fmt.Sprintf("- [%d] %s", f.Property.Code + message.Code, message.Message))
 	}
 }
 
@@ -87,7 +87,7 @@ func (f *Field) Comment() {
 func (f *Field) CharLength() {
 	for _, field := range f.Property.Table.Fields {
 		if field.Type == "char" && field.Length >= 50 {
-			f.AddMessage(7, fmt.Sprintf("Field with char type should by have length less than 50 chars: %s(%d).", field.Name, field.Length))
+			f.AddMessage(7, fmt.Sprintf("Field with char type should by have length less than 50 chars: %s(%d).", field.Type, field.Length))
 		}
 	}
 }
@@ -95,7 +95,7 @@ func (f *Field) CharLength() {
 func (f *Field) VarcharLength() {
 	for _, field := range f.Property.Table.Fields {
 		if field.Type == "varchar" && field.Length >= 255 {
-			f.AddMessage(8, fmt.Sprintf("Field varchar type with length great than 255 should by text type: %s(%d).", field.Name, field.Length))
+			f.AddMessage(8, fmt.Sprintf("Field varchar type with length great than 255 should by text type: %s(%d).", field.Type, field.Length))
 		}
 	}
 }

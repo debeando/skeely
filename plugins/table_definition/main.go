@@ -33,7 +33,7 @@ func (m *TableDefinition) Run(p registry.Property) {
 	m.LowerCase()
 
 	for _, message := range m.Property.Messages {
-		fmt.Println(fmt.Sprintf("[%d] %s", m.Property.Code+message.Code, message.Message))
+		fmt.Println(fmt.Sprintf("- [%d] %s", m.Property.Code + message.Code, message.Message))
 	}
 }
 
@@ -81,32 +81,32 @@ func (m *TableDefinition) Name() {
 
 func (m *TableDefinition) Length() {
 	if len(m.Property.Table.Name) > 64 {
-		m.AddMessage(7, "Table name is large.")
+		m.AddMessage(7, fmt.Sprintf("Table name is large: %s.", m.Property.Table.Name))
 	}
 }
 
 func (m *TableDefinition) Dots() {
 	if strings.Contains(m.Property.Table.Name, ".") {
-		m.AddMessage(8, "Table name contains dot's in the name.")
+		m.AddMessage(8, fmt.Sprintf("Table name contains dot's in the name: %s.", m.Property.Table.Name))
 	}
 }
 
 func (m *TableDefinition) StartWithUnderscore() {
 	if strings.HasPrefix(m.Property.Table.Name, "_") {
-		m.AddMessage(9, "Table name start with underscore.")
+		m.AddMessage(9, fmt.Sprintf("Table name start with underscore: %s.", m.Property.Table.Name))
 	}
 }
 
 func (m *TableDefinition) EndWithTemp() {
 	if strings.HasSuffix(m.Property.Table.Name, "_tmp") || strings.HasSuffix(m.Property.Table.Name, "_temp") {
-		m.AddMessage(10, "Table name end with _tmp or _temp.")
+		m.AddMessage(10, fmt.Sprintf("Table name end with _tmp or _temp: %s.", m.Property.Table.Name))
 	}
 }
 
 func (m *TableDefinition) LowerCase() {
 	for _, r := range m.Property.Table.Name {
 		if r >= 'A' && r <= 'Z' {
-			m.AddMessage(11, "Table name has capital letter.")
+			m.AddMessage(11, fmt.Sprintf("Table name has capital letter: %s.", m.Property.Table.Name))
 			break
 		}
 	}

@@ -33,7 +33,7 @@ func main() {
 	}
 
 	directory.Explore(*fPath, func(fileName, fileContent string) {
-		fmt.Println("--> Lint file:", fileName)
+		fmt.Println("> Lint file:", fileName)
 
 		t := table.Table{}
 		if t.Parser(fileContent) != nil {
