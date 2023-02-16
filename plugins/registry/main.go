@@ -17,6 +17,13 @@ var Plugins = map[string]Creator{}
 type Property struct {
 	FilePath string
 	Table    table.Table
+	Code     int
+	Messages []Message
+}
+
+type Message struct {
+	Code    int
+	Message string
 }
 
 // Add new handler.

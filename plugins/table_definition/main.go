@@ -18,6 +18,7 @@ func init() {
 
 func (m *TableDefinition) Run(p registry.Property) {
 	m.Property = p
+	m.Property.Code = 300
 
 	m.IsTable()
 	m.Engine()
@@ -30,77 +31,82 @@ func (m *TableDefinition) Run(p registry.Property) {
 	m.StartWithUnderscore()
 	m.EndWithTemp()
 	m.LowerCase()
+
+	for _, message := range m.Property.Messages {
+		fmt.Println(fmt.Sprintf("[%d] %s", m.Property.Code+message.Code, message.Message))
+	}
+}
+
+func (m *TableDefinition) AddMessage(id int, message string) {
+	m.Property.Messages = append(m.Property.Messages, registry.Message{Code: id, Message: message})
 }
 
 func (m *TableDefinition) IsTable() {
 	ex := `CREATE\sTABLE\s\x60.*\x60\s\([\s\S]*\).*`
 	match, err := regexp.MatchString(ex, m.Property.Table.Raw)
 	if match == false || err != nil {
-		fmt.Println("[301] This is not a table definition.")
+		m.AddMessage(1, "This is not a table definition.")
 	}
 }
 
 func (m *TableDefinition) Engine() {
 	if m.Property.Table.Engine != "InnoDB" {
-		fmt.Println("[302] Table engine is not InnoDB.")
+		m.AddMessage(2, "Table engine is not InnoDB.")
 	}
 }
 
 func (m *TableDefinition) Charset() {
 	if !strings.Contains(strings.ToLower(m.Property.Table.Charset), "utf8") {
-		fmt.Println("[303] Table charset is not set to use UTF8.")
+		m.AddMessage(3, "Table charset is not set to use UTF8.")
 	}
 }
 
 func (m *TableDefinition) Collate() {
 	if !strings.Contains(strings.ToLower(m.Property.Table.Collate), "utf8") {
-		fmt.Println("[304] Table collate is not set to use UTF8.")
+		m.AddMessage(4, "Table collate is not set to use UTF8.")
 	}
 }
 
 func (m *TableDefinition) Comment() {
 	if len(m.Property.Table.Comment) == 0 {
-		fmt.Println("[305] Table no have description.")
+		m.AddMessage(5, "Table no have description.")
 	}
 }
 
 func (m *TableDefinition) Name() {
 	if len(m.Property.Table.Name) == 0 {
-		fmt.Println("[306] Table no have name.")
+		m.AddMessage(6, "Table no have name.")
 	}
 }
 
 func (m *TableDefinition) Length() {
 	if len(m.Property.Table.Name) > 64 {
-		fmt.Println("[307] Table name is large.")
+		m.AddMessage(7, "Table name is large.")
 	}
 }
 
 func (m *TableDefinition) Dots() {
 	if strings.Contains(m.Property.Table.Name, ".") {
-		fmt.Println("[308] Table name contains dot's in the name.")
+		m.AddMessage(8, "Table name contains dot's in the name.")
 	}
 }
 
 func (m *TableDefinition) StartWithUnderscore() {
 	if strings.HasPrefix(m.Property.Table.Name, "_") {
-		fmt.Println("[309] Table name start with underscore.")
+		m.AddMessage(9, "Table name start with underscore.")
 	}
 }
 
 func (m *TableDefinition) EndWithTemp() {
-	if strings.HasSuffix(m.Property.Table.Name, "_tmp") {
-		fmt.Println("[310] Table name end with _tmp.")
-	}
-	if strings.HasSuffix(m.Property.Table.Name, "_temp") {
-		fmt.Println("[310] Table name end with _temp.")
+	if strings.HasSuffix(m.Property.Table.Name, "_tmp") || strings.HasSuffix(m.Property.Table.Name, "_temp") {
+		m.AddMessage(10, "Table name end with _tmp or _temp.")
 	}
 }
 
 func (m *TableDefinition) LowerCase() {
 	for _, r := range m.Property.Table.Name {
 		if r >= 'A' && r <= 'Z' {
-			fmt.Println("[311] Table name has capital letter.")
+			m.AddMessage(11, "Table name has capital letter.")
 			break
 		}
 	}
