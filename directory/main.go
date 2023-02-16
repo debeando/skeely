@@ -3,6 +3,7 @@ package directory
 import (
 	"io/ioutil"
 	"os"
+	"path"
 )
 
 func ReadFile(filePath string) (string, error) {
@@ -10,11 +11,11 @@ func ReadFile(filePath string) (string, error) {
 	return string(body), err
 }
 
-func ReadDir(path string) (files []string) {
-	filesInDir, _ := ioutil.ReadDir(path)
-	for _, file := range filesInDir {
-		if !file.IsDir() {
-			files = append(files, path+file.Name())
+func ReadDir(p string) (files []string) {
+	filesInDir, _ := ioutil.ReadDir(p)
+	for _, item := range filesInDir {
+		if !item.IsDir() {
+			files = append(files, path.Join(p, item.Name()))
 		}
 	}
 
@@ -34,6 +35,9 @@ func Explore(path string, doFile func(fileName, fileContent string)) {
 }
 
 func IsDir(path string) bool {
-	pathInfo, _ := os.Stat(path)
+	pathInfo, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
 	return pathInfo.IsDir()
 }
