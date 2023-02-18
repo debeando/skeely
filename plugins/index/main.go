@@ -6,18 +6,18 @@ import (
 	"mysql-ddl-lint/plugins/registry"
 )
 
-type Index struct {
+type Plugin struct {
 	Property registry.Property
 }
 
 func init() {
-	registry.Add("Index", func() registry.Method { return &Index{} })
+	registry.Add("Index", func() registry.Method { return &Plugin{} })
 }
 
-func (f *Index) Run(p registry.Property) registry.Property {
-	f.Property = p
+func (p *Plugin) Run(p registry.Property) registry.Property {
+	p.Property = p
 
-	return f.Property
+	return p.Property
 }
 
 // - 701 Error: No duplicados.

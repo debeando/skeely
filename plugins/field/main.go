@@ -7,101 +7,101 @@ import (
 	"mysql-ddl-lint/plugins/registry"
 )
 
-type Field struct {
+type Plugin struct {
 	Property registry.Property
 }
 
 func init() {
-	registry.Add("Field", func() registry.Method { return &Field{} })
+	registry.Add("Field", func() registry.Method { return &Plugin{} })
 }
 
-func (f *Field) Run(p registry.Property) registry.Property {
-	f.Property = p
-	f.Property.Code = 400
+func (p *Plugin) Run(a registry.Property) registry.Property {
+	p.Property = a
+	p.Property.Code = 400
 
-	f.Empty()
-	f.ManyFields()
-	f.Length()
-	f.Dots()
-	f.LowerCase()
-	f.Comment()
-	f.CharLength()
-	f.VarcharLength()
-	f.HaveDatetime()
+	p.Empty()
+	p.ManyFields()
+	p.Length()
+	p.Dots()
+	p.LowerCase()
+	p.Comment()
+	p.CharLength()
+	p.VarcharLength()
+	p.HaveDatetime()
 
-	return f.Property
+	return p.Property
 }
 
-func (f *Field) AddMessage(id int, m string) {
-	f.Property.Messages = append(f.Property.Messages, registry.Message{Code: id, Message: m})
+func (p *Plugin) AddMessage(id int, m string) {
+	p.Property.Messages = append(p.Property.Messages, registry.Message{Code: id, Message: m})
 }
 
-func (f *Field) Empty() {
-	if len(f.Property.Table.Fields) == 0 {
-		f.AddMessage(1, "Table no have fields.")
+func (p *Plugin) Empty() {
+	if len(p.Property.Table.Fields) == 0 {
+		p.AddMessage(1, "Table no have fields.")
 	}
 }
 
-func (f *Field) ManyFields() {
-	if len(f.Property.Table.Fields) >= 20 {
-		f.AddMessage(2, "Table have many fields.")
+func (p *Plugin) ManyFields() {
+	if len(p.Property.Table.Fields) >= 20 {
+		p.AddMessage(2, "Table have many fields.")
 	}
 }
 
-func (f *Field) Length() {
-	for _, field := range f.Property.Table.Fields {
+func (p *Plugin) Length() {
+	for _, field := range p.Property.Table.Fields {
 		if len(field.Name) >= 40 {
-			f.AddMessage(3, fmt.Sprintf("Field name is to large, max 40: %s", field.Name))
+			p.AddMessage(3, fmt.Sprintf("Field name is to large, max 40: %s", field.Name))
 		}
 	}
 }
 
-func (f *Field) Dots() {
-	for _, field := range f.Property.Table.Fields {
+func (p *Plugin) Dots() {
+	for _, field := range p.Property.Table.Fields {
 		if strings.Contains(field.Name, ".") {
-			f.AddMessage(4, fmt.Sprintf("Field name contains dot's, please remove: %s", field.Name))
+			p.AddMessage(4, fmt.Sprintf("Field name contains dot's, please remove: %s", field.Name))
 		}
 	}
 }
 
-func (f *Field) LowerCase() {
-	for _, field := range f.Property.Table.Fields {
+func (p *Plugin) LowerCase() {
+	for _, field := range p.Property.Table.Fields {
 		for _, r := range field.Name {
 			if r >= 'A' && r <= 'Z' {
-				f.AddMessage(5, fmt.Sprintf("Field name has capital letter, please use lower case: %s", field.Name))
+				p.AddMessage(5, fmt.Sprintf("Field name has capital letter, please use lower case: %s", field.Name))
 			}
 		}
 	}
 }
 
-func (f *Field) Comment() {
-	for _, field := range f.Property.Table.Fields {
+func (p *Plugin) Comment() {
+	for _, field := range p.Property.Table.Fields {
 		if len(field.Comment) == 0 {
-			f.AddMessage(6, fmt.Sprintf("Field should by have comment: %s", field.Name))
+			p.AddMessage(6, fmt.Sprintf("Field should by have comment: %s", field.Name))
 		}
 	}
 }
 
-func (f *Field) CharLength() {
-	for _, field := range f.Property.Table.Fields {
+func (p *Plugin) CharLength() {
+	for _, field := range p.Property.Table.Fields {
 		if field.Type == "char" && field.Length >= 50 {
-			f.AddMessage(7, fmt.Sprintf("Field with char type should by have length less than 50 chars: %s(%d)", field.Type, field.Length))
+			p.AddMessage(7, fmt.Sprintf("Field with char type should by have length less than 50 chars: %s(%d)", field.Type, field.Length))
 		}
 	}
 }
 
-func (f *Field) VarcharLength() {
-	for _, field := range f.Property.Table.Fields {
+func (p *Plugin) VarcharLength() {
+	for _, field := range p.Property.Table.Fields {
 		if field.Type == "varchar" && field.Length >= 255 {
-			f.AddMessage(8, fmt.Sprintf("Field varchar type with length great than 255 should by text type: %s(%d)", field.Type, field.Length))
+			p.AddMessage(8, fmt.Sprintf("Field varchar type with length great than 255 should by text type: %s(%d)", field.Type, field.Length))
 		}
 	}
 }
 
-func (f *Field) HaveDatetime() {
-	for _, field := range f.Property.Table.Fields {
+func (p *Plugin) HaveDatetime() {
+	for _, field := range p.Property.Table.Fields {
 		if field.Type == "datetime" {
-			f.AddMessage(9, fmt.Sprintf("Field datetime type is defined, should by timestamp: %s", field.Name))
+			p.AddMessage(9, fmt.Sprintf("Field datetime type is defined, should by timestamp: %s", field.Name))
 		}
 	}
 }

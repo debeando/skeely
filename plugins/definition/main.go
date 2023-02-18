@@ -8,103 +8,103 @@ import (
 	"mysql-ddl-lint/plugins/registry"
 )
 
-type Definition struct {
+type Plugin struct {
 	Property registry.Property
 }
 
 func init() {
-	registry.Add("Table Definition", func() registry.Method { return &Definition{} })
+	registry.Add("Table Definition", func() registry.Method { return &Plugin{} })
 }
 
-func (m *Definition) Run(p registry.Property) registry.Property {
-	m.Property = p
-	m.Property.Code = 300
+func (p *Plugin) Run(a registry.Property) registry.Property {
+	p.Property = a
+	p.Property.Code = 300
 
-	m.IsTable()
-	m.Engine()
-	m.Charset()
-	m.Collate()
-	m.Comment()
-	m.Name()
-	m.Length()
-	m.Dots()
-	m.StartWithUnderscore()
-	m.EndWithTemp()
-	m.LowerCase()
+	p.IsTable()
+	p.Engine()
+	p.Charset()
+	p.Collate()
+	p.Comment()
+	p.Name()
+	p.Length()
+	p.Dots()
+	p.StartWithUnderscore()
+	p.EndWithTemp()
+	p.LowerCase()
 
-	return m.Property
+	return p.Property
 }
 
-func (m *Definition) AddMessage(id int, message string) {
-	m.Property.Messages = append(m.Property.Messages, registry.Message{Code: id, Message: message})
+func (p *Plugin) AddMessage(id int, message string) {
+	p.Property.Messages = append(p.Property.Messages, registry.Message{Code: id, Message: message})
 }
 
-func (m *Definition) IsTable() {
+func (p *Plugin) IsTable() {
 	ex := `CREATE\sTABLE\s\x60.*\x60\s\([\s\S]*\).*`
-	match, err := regexp.MatchString(ex, m.Property.Table.Raw)
+	match, err := regexp.MatchString(ex, p.Property.Table.Raw)
 	if match == false || err != nil {
-		m.AddMessage(1, "This is not a table definition.")
+		p.AddMessage(1, "This is not a table definition.")
 	}
 }
 
-func (m *Definition) Engine() {
-	if m.Property.Table.Engine != "InnoDB" {
-		m.AddMessage(2, "Table engine is not InnoDB.")
+func (p *Plugin) Engine() {
+	if p.Property.Table.Engine != "InnoDB" {
+		p.AddMessage(2, "Table engine is not InnoDB.")
 	}
 }
 
-func (m *Definition) Charset() {
-	if !strings.Contains(strings.ToLower(m.Property.Table.Charset), "utf8") {
-		m.AddMessage(3, "Table charset is not set to use UTF8.")
+func (p *Plugin) Charset() {
+	if !strings.Contains(strings.ToLower(p.Property.Table.Charset), "utf8") {
+		p.AddMessage(3, "Table charset is not set to use UTF8.")
 	}
 }
 
-func (m *Definition) Collate() {
-	if !strings.Contains(strings.ToLower(m.Property.Table.Collate), "utf8") {
-		m.AddMessage(4, "Table collate is not set to use UTF8.")
+func (p *Plugin) Collate() {
+	if !strings.Contains(strings.ToLower(p.Property.Table.Collate), "utf8") {
+		p.AddMessage(4, "Table collate is not set to use UTF8.")
 	}
 }
 
-func (m *Definition) Comment() {
-	if len(m.Property.Table.Comment) == 0 {
-		m.AddMessage(5, "Table no have description.")
+func (p *Plugin) Comment() {
+	if len(p.Property.Table.Comment) == 0 {
+		p.AddMessage(5, "Table no have description.")
 	}
 }
 
-func (m *Definition) Name() {
-	if len(m.Property.Table.Name) == 0 {
-		m.AddMessage(6, "Table no have name.")
+func (p *Plugin) Name() {
+	if len(p.Property.Table.Name) == 0 {
+		p.AddMessage(6, "Table no have name.")
 	}
 }
 
-func (m *Definition) Length() {
-	if len(m.Property.Table.Name) > 64 {
-		m.AddMessage(7, fmt.Sprintf("Table name is large: %s.", m.Property.Table.Name))
+func (p *Plugin) Length() {
+	if len(p.Property.Table.Name) > 64 {
+		p.AddMessage(7, fmt.Sprintf("Table name is large: %s.", p.Property.Table.Name))
 	}
 }
 
-func (m *Definition) Dots() {
-	if strings.Contains(m.Property.Table.Name, ".") {
-		m.AddMessage(8, fmt.Sprintf("Table name contains dot's in the name: %s.", m.Property.Table.Name))
+func (p *Plugin) Dots() {
+	if strings.Contains(p.Property.Table.Name, ".") {
+		p.AddMessage(8, fmt.Sprintf("Table name contains dot's in the name: %s.", p.Property.Table.Name))
 	}
 }
 
-func (m *Definition) StartWithUnderscore() {
-	if strings.HasPrefix(m.Property.Table.Name, "_") {
-		m.AddMessage(9, fmt.Sprintf("Table name start with underscore: %s.", m.Property.Table.Name))
+func (p *Plugin) StartWithUnderscore() {
+	if strings.HasPrefix(p.Property.Table.Name, "_") {
+		p.AddMessage(9, fmt.Sprintf("Table name start with underscore: %s.", p.Property.Table.Name))
 	}
 }
 
-func (m *Definition) EndWithTemp() {
-	if strings.HasSuffix(m.Property.Table.Name, "_tmp") || strings.HasSuffix(m.Property.Table.Name, "_temp") {
-		m.AddMessage(10, fmt.Sprintf("Table name end with _tmp or _temp: %s.", m.Property.Table.Name))
+func (p *Plugin) EndWithTemp() {
+	if strings.HasSuffix(p.Property.Table.Name, "_tmp") || strings.HasSuffix(p.Property.Table.Name, "_temp") {
+		p.AddMessage(10, fmt.Sprintf("Table name end with _tmp or _temp: %s.", p.Property.Table.Name))
 	}
 }
 
-func (m *Definition) LowerCase() {
-	for _, r := range m.Property.Table.Name {
+func (p *Plugin) LowerCase() {
+	for _, r := range p.Property.Table.Name {
 		if r >= 'A' && r <= 'Z' {
-			m.AddMessage(11, fmt.Sprintf("Table name has capital letter: %s.", m.Property.Table.Name))
+			p.AddMessage(11, fmt.Sprintf("Table name has capital letter: %s.", p.Property.Table.Name))
 			break
 		}
 	}

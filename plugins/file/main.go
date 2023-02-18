@@ -8,61 +8,61 @@ import (
 	"mysql-ddl-lint/plugins/registry"
 )
 
-type File struct {
+type Plugin struct {
 	Property registry.Property
 }
 
 func init() {
-	registry.Add("File", func() registry.Method { return &File{} })
+	registry.Add("File", func() registry.Method { return &Plugin{} })
 }
 
-func (f *File) Run(p registry.Property) registry.Property {
-	f.Property = p
-	f.Property.Code = 100
+func (p *Plugin) Run(a registry.Property) registry.Property {
+	p.Property = a
+	p.Property.Code = 100
 
-	f.NoEmpty()
-	f.WithExtension()
-	f.IsUTF8()
-	f.EndWithSemicolon()
-	f.EndWithNewLine()
+	p.NoEmpty()
+	p.WithExtension()
+	p.IsUTF8()
+	p.EndWithSemicolon()
+	p.EndWithNewLine()
 
-	return f.Property
+	return p.Property
 }
 
-func (f *File) AddMessage(id int, m string) {
-	f.Property.Messages = append(f.Property.Messages, registry.Message{Code: id, Message: m})
+func (p *Plugin) AddMessage(id int, m string) {
+	p.Property.Messages = append(p.Property.Messages, registry.Message{Code: id, Message: m})
 }
 
-func (f *File) NoEmpty() {
-	if len(f.Property.Table.Raw) == 0 {
-		f.AddMessage(1, "File is empty.")
+func (p *Plugin) NoEmpty() {
+	if len(p.Property.Table.Raw) == 0 {
+		p.AddMessage(1, "File is empty.")
 	}
 }
 
-func (f *File) WithExtension() {
-	if filepath.Ext(f.Property.FilePath) != ".sql" {
-		f.AddMessage(2, "Invalid file extension, should by '.sql'.")
+func (p *Plugin) WithExtension() {
+	if filepath.Ext(p.Property.FilePath) != ".sql" {
+		p.AddMessage(2, "Invalid file extension, should by '.sql'.")
 	}
 }
 
-func (f *File) IsUTF8() {
-	if !utf8.ValidString(f.Property.Table.Raw) {
-		f.AddMessage(3, "Invalid UTF-8 encoding.")
+func (p *Plugin) IsUTF8() {
+	if !utf8.ValidString(p.Property.Table.Raw) {
+		p.AddMessage(3, "Invalid UTF-8 encoding.")
 	}
 }
 
-func (f *File) EndWithSemicolon() {
+func (p *Plugin) EndWithSemicolon() {
 	ex := `.*;`
-	match, err := regexp.MatchString(ex, f.Property.Table.Raw)
+	match, err := regexp.MatchString(ex, p.Property.Table.Raw)
 	if match == false || err != nil {
-		f.AddMessage(4, "No ending with ';'.")
+		p.AddMessage(4, "No ending with ';'.")
 	}
 }
 
-func (f *File) EndWithNewLine() {
+func (p *Plugin) EndWithNewLine() {
 	ex := `.*;\n`
-	match, err := regexp.MatchString(ex, f.Property.Table.Raw)
+	match, err := regexp.MatchString(ex, p.Property.Table.Raw)
 	if match == false || err != nil {
-		f.AddMessage(5, "No ending with new line.")
+		p.AddMessage(5, "No ending with new line.")
 	}
 }
