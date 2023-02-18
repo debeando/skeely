@@ -43,19 +43,19 @@ func (f *Field) GetName() {
 }
 
 func (f *Field) GetUnsigned() {
-	f.Unsigned = strings.Contains(f.Raw, " UNSIGNED")
+	f.Unsigned = strings.Contains(strings.ToUpper(f.Raw), " UNSIGNED")
 }
 
 func (f *Field) GetAutoIncrement() {
-	f.AutoIncrement = strings.Contains(f.Raw, " AUTO_INCREMENT")
+	f.AutoIncrement = strings.Contains(strings.ToUpper(f.Raw), " AUTO_INCREMENT")
 }
 
 func (f *Field) GetZeroFill() {
-	f.ZeroFill = strings.Contains(f.Raw, " ZEROFILL")
+	f.ZeroFill = strings.Contains(strings.ToUpper(f.Raw), " ZEROFILL")
 }
 
 func (f *Field) GetNotNull() {
-	f.NotNull = strings.Contains(f.Raw, " NOT NULL")
+	f.NotNull = strings.Contains(strings.ToUpper(f.Raw), " NOT NULL")
 }
 
 func (f *Field) GetType() {

@@ -8,7 +8,7 @@ import (
 
 func stringToArray(v string) (values []string) {
 	for _, value := range strings.Split(v, ",") {
-		if len(value)  > 0 {
+		if len(value) > 0 {
 			values = append(values, strings.Trim(value, "`"))
 		}
 	}

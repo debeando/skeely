@@ -33,7 +33,7 @@ func (m *Definition) Run(p registry.Property) {
 	m.LowerCase()
 
 	for _, message := range m.Property.Messages {
-		fmt.Println(fmt.Sprintf("- [%d] %s", m.Property.Code + message.Code, message.Message))
+		fmt.Println(fmt.Sprintf("- [%d] %s", m.Property.Code+message.Code, message.Message))
 	}
 }
 
