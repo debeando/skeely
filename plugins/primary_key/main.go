@@ -15,7 +15,7 @@ func init() {
 	registry.Add("PrimaryKey", func() registry.Method { return &PrimaryKey{} })
 }
 
-func (pk *PrimaryKey) Run(p registry.Property) {
+func (pk *PrimaryKey) Run(p registry.Property) registry.Property {
 	pk.Property = p
 	pk.Property.Code = 500
 
@@ -26,9 +26,7 @@ func (pk *PrimaryKey) Run(p registry.Property) {
 	pk.Unsigned()
 	pk.AutoIncrement()
 
-	for _, message := range pk.Property.Messages {
-		fmt.Println(fmt.Sprintf("- [%d] %s", pk.Property.Code+message.Code, message.Message))
-	}
+	return pk.Property
 }
 
 func (pk *PrimaryKey) AddMessage(id int, m string) {

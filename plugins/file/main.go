@@ -1,7 +1,6 @@
 package file
 
 import (
-	"fmt"
 	"path/filepath"
 	"regexp"
 	"unicode/utf8"
@@ -17,7 +16,7 @@ func init() {
 	registry.Add("File", func() registry.Method { return &File{} })
 }
 
-func (f *File) Run(p registry.Property) {
+func (f *File) Run(p registry.Property) registry.Property {
 	f.Property = p
 	f.Property.Code = 100
 
@@ -27,9 +26,7 @@ func (f *File) Run(p registry.Property) {
 	f.EndWithSemicolon()
 	f.EndWithNewLine()
 
-	for _, message := range f.Property.Messages {
-		fmt.Println(fmt.Sprintf("- [%d] %s", f.Property.Code+message.Code, message.Message))
-	}
+	return f.Property
 }
 
 func (f *File) AddMessage(id int, m string) {

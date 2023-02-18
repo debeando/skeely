@@ -14,10 +14,10 @@ func init() {
 	registry.Add("Index", func() registry.Method { return &Index{} })
 }
 
-func (f *Index) Run(p registry.Property) {
+func (f *Index) Run(p registry.Property) registry.Property {
 	f.Property = p
 
-	fmt.Println(f.Property.Table)
+	return f.Property
 }
 
 // - 701 Error: No duplicados.

@@ -16,7 +16,7 @@ func init() {
 	registry.Add("Table Definition", func() registry.Method { return &Definition{} })
 }
 
-func (m *Definition) Run(p registry.Property) {
+func (m *Definition) Run(p registry.Property) registry.Property {
 	m.Property = p
 	m.Property.Code = 300
 
@@ -32,9 +32,7 @@ func (m *Definition) Run(p registry.Property) {
 	m.EndWithTemp()
 	m.LowerCase()
 
-	for _, message := range m.Property.Messages {
-		fmt.Println(fmt.Sprintf("- [%d] %s", m.Property.Code+message.Code, message.Message))
-	}
+	return m.Property
 }
 
 func (m *Definition) AddMessage(id int, message string) {

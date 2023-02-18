@@ -5,7 +5,7 @@ import (
 )
 
 type Method interface {
-	Run(p Property)
+	Run(p Property) Property
 }
 
 type Creator func() Method

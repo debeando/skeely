@@ -15,6 +15,8 @@ import (
 const VERSION string = "1.0.0"
 const USAGE = `mysql-ddl-lint %s.`
 
+var exitCode = 0
+
 func main() {
 	fHelp := flag.Bool("help", false, "")
 	fVersion := flag.Bool("version", false, "")
@@ -42,14 +44,20 @@ func main() {
 
 		for key := range registry.Plugins {
 			if creator, ok := registry.Plugins[key]; ok {
-				plugin := creator()
-				plugin.Run(registry.Property{
+				properties := creator().Run(registry.Property {
 					FilePath: fileName,
 					Table:    t,
 				})
+
+				for _, message := range properties.Messages {
+					fmt.Println(fmt.Sprintf("- [%d] %s", properties.Code + message.Code, message.Message))
+					exitCode = 1
+				}
 			}
 		}
 	})
+
+	os.Exit(exitCode)
 }
 
 func help(rc int) {

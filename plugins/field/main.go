@@ -15,7 +15,7 @@ func init() {
 	registry.Add("Field", func() registry.Method { return &Field{} })
 }
 
-func (f *Field) Run(p registry.Property) {
+func (f *Field) Run(p registry.Property) registry.Property {
 	f.Property = p
 	f.Property.Code = 400
 
@@ -29,9 +29,7 @@ func (f *Field) Run(p registry.Property) {
 	f.VarcharLength()
 	f.HaveDatetime()
 
-	for _, message := range f.Property.Messages {
-		fmt.Println(fmt.Sprintf("- [%d] %s", f.Property.Code+message.Code, message.Message))
-	}
+	return f.Property
 }
 
 func (f *Field) AddMessage(id int, m string) {
