@@ -16,6 +16,16 @@ func StringToArray(v string) (values []string) {
 	return values
 }
 
+func StringToArrayInt(v string) (values []int) {
+	for _, value := range strings.Split(v, ",") {
+		if len(value) > 0 {
+			values = append(values, StringToInt(strings.Trim(value, " ")))
+		}
+	}
+
+	return values
+}
+
 func StringToInt(s string) int {
 	i, err := strconv.Atoi(s)
 	if err != nil {
@@ -41,4 +51,27 @@ func FindMatchOne(e, r string, l int) string {
 
 func StringIn(x, y string) bool {
 	return strings.Contains(strings.ToUpper(x), y)
+}
+
+func UnduplicateArrayInt(intSlice []int) (list []int) {
+	keys := make(map[int]bool)
+
+	for _, entry := range intSlice {
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
+
+	return list
+}
+
+func IntInArrayInt(slice []int, value int) bool {
+	for index := range slice {
+		if slice[index] == value {
+			return true
+		}
+	}
+
+	return false
 }

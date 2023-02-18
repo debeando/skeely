@@ -1,0 +1,5 @@
+---
+ignore: 302, 303, 304, 305, 406
+tables:
+  - name: case01
+    ignore: 405, 303

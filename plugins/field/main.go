@@ -33,7 +33,14 @@ func (p *Plugin) Run(a registry.Property) registry.Property {
 }
 
 func (p *Plugin) AddMessage(id int, m string) {
+	// para listar todos los codigos y hacer una lista de lo que hace actualizada.
+	// los mensajes deben estar en una variable.
+	// p.Property.Checks[1] = "Field name is to large, max 40: %s"
+	// Nosotros en el addMessage solo pasamos el 1 y los args.
+
+	// aqui es donde valido si el mensaje entra o no dependiendo del fichero?
 	p.Property.Messages = append(p.Property.Messages, registry.Message{Code: id, Message: m})
+	// si se puede evitar este codigo en cada plugin seria genial.
 }
 
 func (p *Plugin) Empty() {

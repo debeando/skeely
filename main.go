@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"mysql-ddl-lint/common"
+	"mysql-ddl-lint/config"
 	"mysql-ddl-lint/directory"
 	"mysql-ddl-lint/plugins/registry"
 	"mysql-ddl-lint/table"
@@ -13,7 +15,7 @@ import (
 )
 
 const VERSION string = "1.0.0"
-const USAGE = `mysql-ddl-lint %s.`
+const USAGE = `mylinter %s.`
 
 var exitCode = 0
 
@@ -34,23 +36,34 @@ func main() {
 		help(1)
 	}
 
+	cnf := config.Config{}
+	err := cnf.Load()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(2)
+	}
+
 	directory.Explore(*fPath, func(fileName, fileContent string) {
 		fmt.Println("> File:", fileName)
 
-		t := table.Table{}
-		if t.Parser(fileContent) != nil {
+		tbl := table.Table{}
+		if tbl.Parser(fileContent) != nil {
 			return
 		}
 
 		for key := range registry.Plugins {
 			if creator, ok := registry.Plugins[key]; ok {
-				properties := creator().Run(registry.Property {
+				properties := creator().Run(registry.Property{
 					FilePath: fileName,
-					Table:    t,
+					Table:    tbl,
 				})
 
 				for _, message := range properties.Messages {
-					fmt.Println(fmt.Sprintf("- [%d] %s", properties.Code + message.Code, message.Message))
+					if common.IntInArrayInt(cnf.IgnoreCodes(tbl.Name), properties.Code+message.Code) {
+						break
+					}
+
+					fmt.Println(fmt.Sprintf("- [%d] %s", properties.Code+message.Code, message.Message))
 					exitCode = 1
 				}
 			}
