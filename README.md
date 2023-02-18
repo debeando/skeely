@@ -3,7 +3,7 @@ This tool help the data definition language review process for developers, the i
 
 ## TODO:
 
-- Config file by database.
+- Config file by database/folder.
 - Ignore specific code by table.
 - Change setting about min/max length data type.
 - Exit code.

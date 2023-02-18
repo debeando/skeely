@@ -2,8 +2,8 @@ package primary_key
 
 import (
 	"fmt"
-	"strings"
 
+	"mysql-ddl-lint/common"
 	"mysql-ddl-lint/plugins/registry"
 )
 
@@ -65,7 +65,7 @@ func (pk *PrimaryKey) NotNull() {
 func (pk *PrimaryKey) BigInt() {
 	for _, key := range pk.Property.Table.PrimaryKey {
 		for _, field := range pk.Property.Table.Fields {
-			if key == field.Name && strings.Contains(strings.ToUpper(field.Type), "INT") && strings.ToUpper(field.Type) != "BIGINT" {
+			if key == field.Name && common.StringIn(field.Type, "INT") && field.Type != "BIGINT" {
 				pk.AddMessage(4, fmt.Sprintf("Primary Key field should by BIGINT: %s %s", field.Name, field.Type))
 			}
 		}
@@ -75,7 +75,7 @@ func (pk *PrimaryKey) BigInt() {
 func (pk *PrimaryKey) Unsigned() {
 	for _, key := range pk.Property.Table.PrimaryKey {
 		for _, field := range pk.Property.Table.Fields {
-			if key == field.Name && strings.Contains(strings.ToUpper(field.Type), "INT") && !field.Unsigned {
+			if key == field.Name && common.StringIn(field.Type, "INT") && !field.Unsigned {
 				pk.AddMessage(5, fmt.Sprintf("Primary Key field should by unsigned: %s", field.Name))
 			}
 		}
@@ -85,7 +85,7 @@ func (pk *PrimaryKey) Unsigned() {
 func (pk *PrimaryKey) AutoIncrement() {
 	for _, key := range pk.Property.Table.PrimaryKey {
 		for _, field := range pk.Property.Table.Fields {
-			if key == field.Name && strings.Contains(strings.ToUpper(field.Type), "INT") && !field.AutoIncrement {
+			if key == field.Name && common.StringIn(field.Type, "INT") && !field.AutoIncrement {
 				pk.AddMessage(6, fmt.Sprintf("Primary Key field should by auto increment: %s", field.Name))
 			}
 		}
