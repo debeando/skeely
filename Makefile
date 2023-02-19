@@ -15,19 +15,19 @@ deps: ## Download dependencies
 
 build: ## Build binary for local operating system
 	@go generate ./...
-	@go build -o mysql-ddl-checker main.go
+	@go build -o mylinter main.go
 
 build-linux: ## Build binary for lnux operating system
 	@mkdir -p pkg/linux_amd64/
 	@go generate ./...
-	@GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o pkg/linux_amd64/mysql-ddl-checker main.go
-	@tar -czf pkg/linux_amd64/mysql-ddl-checker-linux_amd64.tar.gz -C pkg/linux_amd64/ mysql-ddl-checker
+	@GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o pkg/linux_amd64/mylinter main.go
+	@tar -czf pkg/linux_amd64/mylinter-linux_amd64.tar.gz -C pkg/linux_amd64/ mylinter
 
 build-darwin: ## Build binary for darwin operating system
 	@mkdir -p pkg/darwin_amd64/
 	@go generate ./...
-	@GOOS=darwin GOARCH=amd64 go build -ldflags "-s -w" -o pkg/darwin_amd64/mysql-ddl-checker main.go
-	@tar -czf pkg/darwin_amd64/mysql-ddl-checker-darwin_amd64.tar.gz -C pkg/darwin_amd64/ mysql-ddl-checker
+	@GOOS=darwin GOARCH=amd64 go build -ldflags "-s -w" -o pkg/darwin_amd64/mylinter main.go
+	@tar -czf pkg/darwin_amd64/mylinter-darwin_amd64.tar.gz -C pkg/darwin_amd64/ mylinter
 
 clean: ## Remove build related file
 	@go clean
