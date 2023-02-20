@@ -8,7 +8,7 @@ import (
 	"mysql-ddl-lint/common"
 	"mysql-ddl-lint/config"
 	"mysql-ddl-lint/directory"
-	"mysql-ddl-lint/plugins/registry"
+	"mysql-ddl-lint/registry"
 	"mysql-ddl-lint/table"
 
 	_ "mysql-ddl-lint/plugins"
@@ -53,17 +53,15 @@ func main() {
 
 		for key := range registry.Plugins {
 			if creator, ok := registry.Plugins[key]; ok {
-				properties := creator().Run(registry.Property{
-					FilePath: fileName,
-					Table:    tbl,
-				})
+				plugin := creator()
+				messages := plugin.Run(registry.Arguments{Path: fileName, Table: tbl})
 
-				for _, message := range properties.Messages {
-					if common.IntInArrayInt(cnf.IgnoreCodes(tbl.Name), properties.Code+message.Code) {
+				for _, message := range messages {
+					if common.IntInArrayInt(cnf.IgnoreCodes(tbl.Name), key+message.Code) {
 						break
 					}
 
-					fmt.Println(fmt.Sprintf("- [%d] %s", properties.Code+message.Code, message.Message))
+					fmt.Println(fmt.Sprintf("- [%d] %s", key+message.Code, message.Message))
 					exitCode = 1
 				}
 			}

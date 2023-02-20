@@ -5,20 +5,20 @@ import (
 	"regexp"
 	"unicode/utf8"
 
-	"mysql-ddl-lint/plugins/registry"
+	"mysql-ddl-lint/registry"
 )
 
 type Plugin struct {
-	Property registry.Property
+	Arguments registry.Arguments
+	Messages  []registry.Message
 }
 
 func init() {
-	registry.Add("File", func() registry.Method { return &Plugin{} })
+	registry.Add(100, func() registry.Module { return &Plugin{} })
 }
 
-func (p *Plugin) Run(a registry.Property) registry.Property {
-	p.Property = a
-	p.Property.Code = 100
+func (p *Plugin) Run(a registry.Arguments) []registry.Message {
+	p.Arguments = a
 
 	p.NoEmpty()
 	p.WithExtension()
@@ -26,34 +26,34 @@ func (p *Plugin) Run(a registry.Property) registry.Property {
 	p.EndWithSemicolon()
 	p.EndWithNewLine()
 
-	return p.Property
+	return p.Messages
 }
 
 func (p *Plugin) AddMessage(id int, m string) {
-	p.Property.Messages = append(p.Property.Messages, registry.Message{Code: id, Message: m})
+	p.Messages = append(p.Messages, registry.Message{Code: id, Message: m})
 }
 
 func (p *Plugin) NoEmpty() {
-	if len(p.Property.Table.Raw) == 0 {
+	if len(p.Arguments.Table.Raw) == 0 {
 		p.AddMessage(1, "File is empty.")
 	}
 }
 
 func (p *Plugin) WithExtension() {
-	if filepath.Ext(p.Property.FilePath) != ".sql" {
+	if filepath.Ext(p.Arguments.Path) != ".sql" {
 		p.AddMessage(2, "Invalid file extension, should by '.sql'.")
 	}
 }
 
 func (p *Plugin) IsUTF8() {
-	if !utf8.ValidString(p.Property.Table.Raw) {
+	if !utf8.ValidString(p.Arguments.Table.Raw) {
 		p.AddMessage(3, "Invalid UTF-8 encoding.")
 	}
 }
 
 func (p *Plugin) EndWithSemicolon() {
 	ex := `.*;`
-	match, err := regexp.MatchString(ex, p.Property.Table.Raw)
+	match, err := regexp.MatchString(ex, p.Arguments.Table.Raw)
 	if match == false || err != nil {
 		p.AddMessage(4, "No ending with ';'.")
 	}
@@ -61,7 +61,7 @@ func (p *Plugin) EndWithSemicolon() {
 
 func (p *Plugin) EndWithNewLine() {
 	ex := `.*;\n`
-	match, err := regexp.MatchString(ex, p.Property.Table.Raw)
+	match, err := regexp.MatchString(ex, p.Arguments.Table.Raw)
 	if match == false || err != nil {
 		p.AddMessage(5, "No ending with new line.")
 	}
