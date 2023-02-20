@@ -41,7 +41,7 @@ Have the follow output:
 
 ## Configure
 
-This setp is optional, but maybe need ignore specific error code, this is the way: Is very easy to configure, only need to create file witch this name `.mylinter.yaml` on directory you have \*.sql, add folow lines and put the number of errors code to ignore:
+This step is optional, but maybe need ignore specific error code, this is the way: Is very easy to configure, only need to create file witch this name `.mylinter.yaml` on directory you have \*.sql, add folow lines and put the number of errors code to ignore:
 
 ```yaml
 ---
