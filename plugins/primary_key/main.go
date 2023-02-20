@@ -64,7 +64,7 @@ func (p *Plugin) BigInt() {
 	for _, key := range p.Arguments.Table.PrimaryKey {
 		for _, field := range p.Arguments.Table.Fields {
 			if key == field.Name && common.StringIn(field.Type, "INT") && field.Type != "BIGINT" {
-				p.AddMessage(4, fmt.Sprintf("The primary key field must be BIGINT: %s %s", field.Name, field.Type))
+				p.AddMessage(4, fmt.Sprintf("Primary key field must be BIGINT: %s %s", field.Name, field.Type))
 			}
 		}
 	}

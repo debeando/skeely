@@ -108,7 +108,7 @@ func (p *Plugin) Comment() {
 
 func (p *Plugin) CharLength() {
 	for _, field := range p.Arguments.Table.Fields {
-		if field.Type == "char" && field.Length >= 50 {
+		if field.Type == "CHAR" && field.Length >= 50 {
 			p.AddMessage(7, field.Type, field.Length)
 		}
 	}
@@ -116,7 +116,7 @@ func (p *Plugin) CharLength() {
 
 func (p *Plugin) VarcharLength() {
 	for _, field := range p.Arguments.Table.Fields {
-		if field.Type == "varchar" && field.Length >= 255 {
+		if field.Type == "VARCHAR" && field.Length >= 255 {
 			p.AddMessage(8, field.Type, field.Length)
 		}
 	}
@@ -124,7 +124,7 @@ func (p *Plugin) VarcharLength() {
 
 func (p *Plugin) HaveDatetime() {
 	for _, field := range p.Arguments.Table.Fields {
-		if field.Type == "datetime" {
+		if field.Type == "DATETIME" {
 			p.AddMessage(9, field.Name)
 		}
 	}
