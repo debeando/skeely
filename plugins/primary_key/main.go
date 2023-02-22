@@ -3,8 +3,8 @@ package primary_key
 import (
 	"fmt"
 
-	"mysql-ddl-lint/common"
-	"mysql-ddl-lint/registry"
+	"mylinter/common"
+	"mylinter/registry"
 )
 
 type Plugin struct {

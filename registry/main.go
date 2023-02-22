@@ -1,7 +1,7 @@
 package registry
 
 import (
-	"mysql-ddl-lint/table"
+	"mylinter/table"
 )
 
 type Creator func() Module

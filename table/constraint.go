@@ -1,7 +1,7 @@
 package table
 
 import (
-	"mysql-ddl-lint/common"
+	"mylinter/common"
 )
 
 type Constraint struct {

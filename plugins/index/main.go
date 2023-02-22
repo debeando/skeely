@@ -3,7 +3,7 @@ package index
 import (
 	"fmt"
 
-	"mysql-ddl-lint/plugins/registry"
+	"mylinter/plugins/registry"
 )
 
 type Plugin struct {

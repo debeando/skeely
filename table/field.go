@@ -3,7 +3,7 @@ package table
 import (
 	"strings"
 
-	"mysql-ddl-lint/common"
+	"mylinter/common"
 )
 
 type Field struct {

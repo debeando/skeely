@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"mysql-ddl-lint/registry"
+	"mylinter/registry"
 )
 
 type Plugin struct {

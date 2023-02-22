@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"mysql-ddl-lint/common"
+	"mylinter/common"
 
 	"github.com/go-yaml/yaml"
 )

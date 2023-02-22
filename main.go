@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"os"
 
-	"mysql-ddl-lint/common"
-	"mysql-ddl-lint/config"
-	"mysql-ddl-lint/directory"
-	"mysql-ddl-lint/registry"
-	"mysql-ddl-lint/table"
+	"mylinter/common"
+	"mylinter/config"
+	"mylinter/directory"
+	"mylinter/registry"
+	"mylinter/table"
 
-	_ "mysql-ddl-lint/plugins"
+	_ "mylinter/plugins"
 )
 
 const VERSION string = "1.0.0"
