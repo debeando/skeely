@@ -58,7 +58,7 @@ func main() {
 
 				for _, message := range messages {
 					if common.IntInArrayInt(cnf.IgnoreCodes(tbl.Name), key+message.Code) {
-						break
+						continue
 					}
 
 					fmt.Println(fmt.Sprintf("- [%d] %s", key+message.Code, message.Message))

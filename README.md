@@ -70,3 +70,4 @@ tables:
 - Foreign Key lint.
 - Verify cardinality with MySQL and data.
 - List all codes and checks.
+- Allow to connect to MySQL for lint tables and analize cardinality.

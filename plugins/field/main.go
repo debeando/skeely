@@ -26,8 +26,8 @@ func (p *Plugin) Run(a registry.Arguments) []registry.Message {
 		{ Code: 4, Message: "Field name contains dot's, please remove it: %s" },
 		{ Code: 5, Message: "Field name has capital letter, please use lower case: %s" },
 		{ Code: 6, Message: "Field should by have comment: %s" },
-		{ Code: 7, Message: "Field with char type should by have length less than 50 chars: %s(%d)" },
-		{ Code: 8, Message: "Field varchar type with length great than 255 should by text type: %s(%d)" },
+		{ Code: 7, Message: "Field with char type should by have length less than 50 chars: %s %s(%d)" },
+		{ Code: 8, Message: "Field varchar type with length great than 255 should by text type: %s %s(%d)" },
 		{ Code: 9, Message: "Field datetime type is defined, should by timestamp: %s" },
 	}
 
@@ -108,16 +108,16 @@ func (p *Plugin) Comment() {
 
 func (p *Plugin) CharLength() {
 	for _, field := range p.Arguments.Table.Fields {
-		if field.Type == "CHAR" && field.Length >= 50 {
-			p.AddMessage(7, field.Type, field.Length)
+		if field.Type == "CHAR" && field.Length >= 51 {
+			p.AddMessage(7, field.Name, field.Type, field.Length)
 		}
 	}
 }
 
 func (p *Plugin) VarcharLength() {
 	for _, field := range p.Arguments.Table.Fields {
-		if field.Type == "VARCHAR" && field.Length >= 255 {
-			p.AddMessage(8, field.Type, field.Length)
+		if field.Type == "VARCHAR" && field.Length >= 256 {
+			p.AddMessage(8, field.Name, field.Type, field.Length)
 		}
 	}
 }
