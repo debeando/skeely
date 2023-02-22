@@ -1,7 +1,7 @@
 # mylinter, is a MySQL Migration Lint
 This tool help the data definition language review process for developers, the idea is to identifying some common and uncommon mistakes that are made during coding to optimize the data model.
 
-For example, if you lint this simple model:
+For example, analize this create table:
 
 ```sql
 CREATE TABLE `userExternal` (
@@ -14,6 +14,12 @@ CREATE TABLE `userExternal` (
 )ENGINE=MyISAM;
 ```
 
+If you lint this simple model with the follow command:
+
+```bash
+make build && ./mylinter --path=assets/examples/case01.sql
+```
+
 Have the follow output:
 
 ```
@@ -21,17 +27,11 @@ Have the follow output:
 - [302] Table engine is not InnoDB.
 - [303] Table charset is not set to use UTF8.
 - [304] Table collate is not set to use UTF8.
-- [305] Table no have description.
 - [311] Table name has capital letter: userExternal.
 - [404] Field name contains dot's, please remove it: user.name
-- [406] Field should by have comment: id
-- [406] Field should by have comment: user.name
-- [406] Field should by have comment: status
-- [406] Field should by have comment: description
-- [406] Field should by have comment: update_at
-- [407] Field with char type should by have length less than 50 chars: CHAR(255)
-- [408] Field varchar type with length great than 255 should by text type: VARCHAR(1024)
-- [408] Field varchar type with length great than 255 should by text type: VARCHAR(2000)
+- [407] Field with char type should by have length less than 50 chars: status CHAR(255)
+- [408] Field varchar type with length great than 255 should by text type: user.name VARCHAR(1024)
+- [408] Field varchar type with length great than 255 should by text type: description VARCHAR(2000)
 - [409] Field datetime type is defined, should by timestamp: update_at
 - [503] Primary Key field should by NOT NULL: id
 - [504] Primary key field must be BIGINT: id INT
