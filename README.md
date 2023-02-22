@@ -39,6 +39,12 @@ Have the follow output:
 - [506] Primary Key field should by auto increment: id
 ```
 
+## Install
+
+```bash
+bash < <(curl -s https://debeando.com/mylinter.sh)
+```
+
 ## Configure
 
 This step is optional, but maybe need ignore specific error code, this is the way: Is very easy to configure, only need to create file witch this name `.mylinter.yaml` on directory you have \*.sql, add folow lines and put the number of errors code to ignore:
@@ -71,3 +77,4 @@ tables:
 - Verify cardinality with MySQL and data.
 - List all codes and checks.
 - Allow to connect to MySQL for lint tables and analize cardinality.
+- Put sumary when it finish, how many errors? It seems everything is right.

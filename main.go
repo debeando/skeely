@@ -14,7 +14,7 @@ import (
 	_ "mylinter/plugins"
 )
 
-const VERSION string = "1.0.0"
+const VERSION string = "0.0.0-beta.1"
 const USAGE = `mylinter %s.`
 
 var exitCode = 0
