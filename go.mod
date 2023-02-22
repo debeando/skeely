@@ -1,4 +1,4 @@
-module mysql-ddl-lint
+module mylinter
 
 go 1.19
 
