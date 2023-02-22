@@ -68,7 +68,7 @@ func (t *Table) GetComment() {
 }
 
 func (t *Table) GetPrimaryKey() {
-	ex := `\s{2}PRIMARY KEY \((?P<Fields>(\x60.+\x60(, )?)+)\)`
+	ex := `\s{2}PRIMARY KEY\s*\((?P<Fields>(\x60.+\x60(, )?)+)\)`
 	t.PrimaryKey = common.StringToArray(common.FindMatchOne(ex, t.Raw, 1))
 }
 
