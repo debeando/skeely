@@ -21,9 +21,4 @@ jobs:
         go build -o mylinter main.go
 
     - name: Lint
-      run: |
-        declare -a FILES=$(git diff --name-only main...test)
-        for f in "${FILES[@]}"
-        do
-          echo "${f}"
-        done
+      run: git diff --name-only main...test
