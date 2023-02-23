@@ -73,8 +73,9 @@ func (p *Plugin) ManyFields() {
 }
 
 func (p *Plugin) Length() {
+	// https://dev.mysql.com/doc/refman/8.0/en/identifier-length.html
 	for _, field := range p.Arguments.Table.Fields {
-		if len(field.Name) >= 40 {
+		if len(field.Name) >= 64 {
 			p.AddMessage(3, field.Name)
 		}
 	}

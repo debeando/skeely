@@ -104,6 +104,7 @@ func (p *Plugin) Name() {
 }
 
 func (p *Plugin) Length() {
+	// https://dev.mysql.com/doc/refman/8.0/en/identifier-length.html
 	if len(p.Arguments.Table.Name) > 64 {
 		p.AddMessage(7, p.Arguments.Table.Name)
 	}

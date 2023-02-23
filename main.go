@@ -14,8 +14,8 @@ import (
 	_ "mylinter/plugins"
 )
 
-const VERSION string = "0.0.0-beta.1"
-const USAGE = `mylinter %s. Is a MySQL Migration Lint and this tool help to identifying some
+const VERSION string = "0.0.0-beta.2"
+const USAGE = `mylinter %s Is a MySQL Migration Lint and this tool help to identifying some
 common and uncommon mistakes data model.
 
 Usage: mylinter [--help | --path | --version]
@@ -70,6 +70,8 @@ func main() {
 			return
 		}
 
+		var lenMessages = 0
+
 		for key := range registry.Plugins {
 			if creator, ok := registry.Plugins[key]; ok {
 				plugin := creator()
@@ -82,9 +84,15 @@ func main() {
 
 					fmt.Println(fmt.Sprintf("- [%d] %s", key+message.Code, message.Message))
 					exitCode = 1
+					lenMessages++
 				}
 			}
 		}
+
+		if lenMessages == 0 {
+			fmt.Println("  Looks ok")
+		}
+		fmt.Println()
 	})
 
 	os.Exit(exitCode)
