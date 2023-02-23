@@ -17,7 +17,7 @@ CREATE TABLE `userExternal` (
 If you lint this simple model with the follow command:
 
 ```bash
-make build && ./mylinter --path=assets/examples/case01.sql
+mylinter --path=assets/examples/case01.sql
 ```
 
 Have the follow output:

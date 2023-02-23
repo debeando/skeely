@@ -15,7 +15,26 @@ import (
 )
 
 const VERSION string = "0.0.0-beta.1"
-const USAGE = `mylinter %s.`
+const USAGE = `mylinter %s. Is a MySQL Migration Lint and this tool help to identifying some
+common and uncommon mistakes data model.
+
+Usage: mylinter [--help | --path | --version]
+
+Options:
+  --help        Show this help.
+  --path        Lint directory or file.
+  --version     Print version numbers.
+
+Example:
+
+  # Lint directory
+  $ mylinter --path=assets/examples/
+
+  # Lint specific file
+  $ mylinter --path=assets/examples/case01.sql
+
+For more help, plese visit: https://github.com/debeando/mylinter
+`
 
 var exitCode = 0
 
