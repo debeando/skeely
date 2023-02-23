@@ -38,7 +38,7 @@ func (t *Table) Parser(r string) error {
 }
 
 func (t *Table) GetName() {
-	ex := `^CREATE TABLE \x60(?P<Table>[0-9,a-z,A-Z$_\.]+)\x60\s\(`
+	ex := `^CREATE TABLE \x60(?P<Table>[0-9,a-z,A-Z$_\.]+)\x60\s*\(`
 	t.Name = common.FindMatchOne(ex, t.Raw, 1)
 }
 

@@ -20,5 +20,9 @@ build: ## Build binary for local operating system
 clean: ## Remove build related file
 	@go clean
 
+tests: ## Run tests
+	@go vet ./...
+	@go test -v ./...
+
 release: ## Creare release of this project
 	@./release.sh
