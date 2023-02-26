@@ -1,4 +1,4 @@
-CREATE TABLE `userExternal` (
+CREATE TABLE `Case01` (
     `id` INT(20),
     `user.name` VARCHAR(1024),
     `status` CHAR(255),
