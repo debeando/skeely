@@ -26,7 +26,7 @@ func init() {
 func Comment(token, repository string, pullRequest int, comment string) error {
 	requestURL := fmt.Sprintf("https://api.github.com/repos/%s/issues/%d/comments", repository, pullRequest)
 	jsonBody := []byte(fmt.Sprintf(`{"body": "%s"}`, comment))
- 	bodyReader := bytes.NewReader(jsonBody)
+	bodyReader := bytes.NewReader(jsonBody)
 	req, err := http.NewRequest(http.MethodPost, requestURL, bodyReader)
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
