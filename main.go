@@ -14,7 +14,7 @@ import (
 	_ "mylinter/plugins"
 )
 
-const VERSION string = "0.0.0-beta.2"
+const VERSION string = "0.0.0-beta.3"
 const USAGE = `mylinter %s Is a MySQL Migration Lint and this tool help to identifying some
 common and uncommon mistakes data model.
 
@@ -55,7 +55,7 @@ func main() {
 		help(1)
 	}
 
-	cnf := config.Config{}
+	cnf := config.GetInstance()
 	err := cnf.Load()
 	if err != nil {
 		fmt.Println(err)

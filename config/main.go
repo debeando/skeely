@@ -11,6 +11,22 @@ import (
 	"github.com/go-yaml/yaml"
 )
 
+var instance *Config
+
+func GetInstance() *Config {
+	if instance == nil {
+		instance = &Config{}
+		instance.setDefaults()
+	}
+	return instance
+}
+
+func (c *Config) setDefaults() {
+	c.FieldsMax = 20
+	c.CharLengthMax = 51
+	c.VarcharLengthMax = 256
+}
+
 func (c *Config) Load() error {
 	source, err := ioutil.ReadFile(".mylinter.yaml")
 	if err != nil {

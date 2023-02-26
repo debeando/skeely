@@ -52,6 +52,9 @@ This step is optional, but maybe need ignore specific error code, this is the wa
 ```yaml
 ---
 ignore: 302, 303, 304, 305, 406
+fields-max: 20
+char-length-max: 51
+varchar-length-max: 256
 tables:
   - name: actors
     ignore: 405

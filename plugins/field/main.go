@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"strings"
 
+	"mylinter/config"
 	"mylinter/registry"
 )
+
+var cnf *config.Config
 
 type Plugin struct {
 	Arguments registry.Arguments
@@ -15,6 +18,9 @@ type Plugin struct {
 
 func init() {
 	registry.Add(400, func() registry.Module { return &Plugin{} })
+
+	cnf = config.GetInstance()
+	cnf.Load()
 }
 
 func (p *Plugin) Run(a registry.Arguments) []registry.Message {
@@ -67,7 +73,7 @@ func (p *Plugin) Empty() {
 }
 
 func (p *Plugin) ManyFields() {
-	if len(p.Arguments.Table.Fields) >= 20 {
+	if len(p.Arguments.Table.Fields) >= cnf.FieldsMax {
 		p.AddMessage(2)
 	}
 }
@@ -109,7 +115,7 @@ func (p *Plugin) Comment() {
 
 func (p *Plugin) CharLength() {
 	for _, field := range p.Arguments.Table.Fields {
-		if field.Type == "CHAR" && field.Length >= 51 {
+		if field.Type == "CHAR" && field.Length >= cnf.CharLengthMax {
 			p.AddMessage(7, field.Name, field.Type, field.Length)
 		}
 	}
@@ -117,7 +123,7 @@ func (p *Plugin) CharLength() {
 
 func (p *Plugin) VarcharLength() {
 	for _, field := range p.Arguments.Table.Fields {
-		if field.Type == "VARCHAR" && field.Length >= 256 {
+		if field.Type == "VARCHAR" && field.Length >= cnf.VarcharLengthMax {
 			p.AddMessage(8, field.Name, field.Type, field.Length)
 		}
 	}
