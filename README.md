@@ -45,9 +45,11 @@ Have the follow output:
 bash < <(curl -s https://debeando.com/mylinter.sh)
 ```
 
+**NOTE:** Now, the install script support only Linux amd64.
+
 ## Configure
 
-This step is optional, but maybe need ignore specific error code, this is the way: Is very easy to configure, only need to create file witch this name `.mylinter.yaml` on directory you have \*.sql, add folow lines and put the number of errors code to ignore:
+This step is optional, but maybe need change default limits or ignore specific error code, this is the way: Is very easy to configure, only need to create file witch this name `.mylinter.yaml` on directory you have \*.sql, add folow lines and adjust by your preferences:
 
 ```yaml
 ---
