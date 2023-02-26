@@ -56,7 +56,7 @@ func (p *Plugin) AddMessage(id int, vals ...any) {
 
 func (p *Plugin) Empty() {
 	if len(p.Arguments.Table.PrimaryKey) == 0 {
-		p.AddMessage(1, "")
+		p.AddMessage(1)
 	}
 }
 
