@@ -1,12 +1,13 @@
 name: Lint
 
-on: [push]
+on: [pull_request]
 jobs:
   test:
     name: Lint assets examples
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout base branch
+      uses: actions/checkout@v3
 
     - name: Set up Go
       uses: actions/setup-go@v3
@@ -19,5 +20,16 @@ jobs:
         go mod download
         go build -o mylinter main.go
 
+    - name: Debug
+      run: |
+        echo "Token: ${{github.token}}"
+        echo "Repository: $GITHUB_REPOSITORY"
+        echo "Pull Request: ${{ github.event.pull_request.number }}"
+
     - name: Lint
-      run: ./mylinter --path=assets/examples
+      run: |
+        ./mylinter --path=assets/examples \
+                   --comment \
+                   --token=${{github.token}} \
+                   --repository=$GITHUB_REPOSITORY \
+                   --pull-request=${{github.event.pull_request.number}}
