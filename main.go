@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"mylinter/common"
+	"mylinter/common/github"
 	"mylinter/config"
 	"mylinter/directory"
 	"mylinter/registry"
@@ -21,9 +22,13 @@ common and uncommon mistakes data model.
 Usage: mylinter [--help | --path | --version]
 
 Options:
-  --help        Show this help.
-  --path        Lint directory or file.
-  --version     Print version numbers.
+  --comment        Send summary as comment into GitHub.
+  --help           Show this help.
+  --path           Lint directory or file.
+  --pull-request   Pull Request ID.
+  --repository     Repository name.
+  --token          Token to auth in github.
+  --version        Print version numbers.
 
 Example:
 
@@ -33,6 +38,13 @@ Example:
   # Lint specific file
   $ mylinter --path=assets/examples/case01.sql
 
+  # Lint and push summary as comment into GitHub Pull Request.
+  $ mylinter --path=assets/examples/case01.sql \
+             --comment \
+             --token=${{github.token}} \
+             --repository=$GITHUB_REPOSITORY \
+             --pull-request=${{github.event.pull_request.number}}
+
 For more help, plese visit: https://github.com/debeando/mylinter
 `
 
@@ -41,7 +53,11 @@ var exitCode = 0
 func main() {
 	fHelp := flag.Bool("help", false, "")
 	fVersion := flag.Bool("version", false, "")
+	fComment := flag.Bool("comment", false, "")
 	fPath := flag.String("path", "", "")
+	fToken := flag.String("token", "", "")
+	fRepository := flag.String("repository", "", "")
+	fPullRequest := flag.Int("pull-request", 0, "")
 	flag.Usage = func() { help(1) }
 	flag.Parse()
 
@@ -62,6 +78,9 @@ func main() {
 		os.Exit(2)
 	}
 
+	var msgComment string
+	msgComment = "# mylinter summary\\n"
+
 	directory.Explore(*fPath, func(fileName, fileContent string) {
 		fmt.Println("> File:", fileName)
 
@@ -69,8 +88,6 @@ func main() {
 		if tbl.Parser(fileContent) != nil {
 			return
 		}
-
-		var lenMessages = 0
 
 		for key := range registry.Plugins {
 			if creator, ok := registry.Plugins[key]; ok {
@@ -83,17 +100,44 @@ func main() {
 					}
 
 					fmt.Println(fmt.Sprintf("- [%d] %s", key+message.Code, message.Message))
-					exitCode = 1
-					lenMessages++
+					exitCode++
 				}
 			}
 		}
 
-		if lenMessages == 0 {
+		if exitCode == 0 {
 			fmt.Println("  Looks ok")
 		}
 		fmt.Println()
+
+		if *fComment {
+			if exitCode > 0 {
+				msgComment += fmt.Sprintf("Result of file: `%s`\\n", fileName)
+				msgComment += "Fix follow issues:\\n"
+				for key := range registry.Plugins {
+					if creator, ok := registry.Plugins[key]; ok {
+						plugin := creator()
+						messages := plugin.Run(registry.Arguments{Path: fileName, Table: tbl})
+
+						for _, message := range messages {
+							if common.IntInArrayInt(cnf.IgnoreCodes(tbl.Name), key+message.Code) {
+								continue
+							}
+
+							msgComment += fmt.Sprintf("- **[%d]** %s\\n", key+message.Code, message.Message)
+						}
+					}
+				}
+				msgComment += "\\n"
+			} else {
+				msgComment += "Looks ok.\\n"
+			}
+		}
 	})
+
+	if *fComment {
+		github.Comment(*fToken, *fRepository, *fPullRequest, msgComment)
+	}
 
 	os.Exit(exitCode)
 }
