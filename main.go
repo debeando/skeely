@@ -79,7 +79,7 @@ func main() {
 	}
 
 	var msgComment string
-	msgComment = "# mylinter summary\\n"
+	msgComment = "# MySQL Migration linter summary\\n"
 
 	directory.Explore(*fPath, func(fileName, fileContent string) {
 		fmt.Println("> File:", fileName)
