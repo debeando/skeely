@@ -19,18 +19,19 @@ const VERSION string = "0.0.0-beta.2"
 const USAGE = `mylinter %s Is a MySQL Migration Lint and this tool help to identifying some
 common and uncommon mistakes data model.
 
-Usage: mylinter [--help | --path | --version]
+USAGE:
+	mylinter [--help | --path | --version]
 
-Options:
-  --comment        Send summary as comment into GitHub.
-  --help           Show this help.
-  --path           Lint directory or file.
-  --pull-request   Pull Request ID.
-  --repository     Repository name.
-  --token          Token to auth in github.
-  --version        Print version numbers.
+OPTIONS:
+  --comment               Send summary as comment into GitHub.
+  --help                  Show this help.
+  --path                  Path of the directory containing the *.sql
+  --github-pull-request   Pull request number.
+  --github-repository     Repository name.
+  --github-token          Token to auth in github.
+  --version               Print version numbers.
 
-Example:
+EXAMPLES:
 
   # Lint directory
   $ mylinter --path=assets/examples/
@@ -40,10 +41,10 @@ Example:
 
   # Lint and push summary as comment into GitHub Pull Request.
   $ mylinter --path=assets/examples/case01.sql \
-             --comment \
-             --token=${{github.token}} \
-             --repository=$GITHUB_REPOSITORY \
-             --pull-request=${{github.event.pull_request.number}}
+             --github-comment \
+             --github-token=${{github.token}} \
+             --github-repository=$GITHUB_REPOSITORY \
+             --github-pull-request=${{github.event.pull_request.number}}
 
 For more help, plese visit: https://github.com/debeando/mylinter
 `
@@ -51,13 +52,27 @@ For more help, plese visit: https://github.com/debeando/mylinter
 var exitCode = 0
 
 func main() {
+	skeelyPATH := os.Getenv("INPUT_PATH")
+	skeelyCOMMENT := os.Getenv("INPUT_COMMENT")
+	skeelyTOKEN := os.Getenv("INPUT_TOKEN")
+	skeelyREPOSITORY := os.Getenv("INPUT_REPOSITORY")
+	skeelyPULLREQUEST := os.Getenv("INPUT_PULLREQUEST")
+
+	fmt.Println("PATH:", skeelyPATH)
+	fmt.Println("COMMENT:", skeelyCOMMENT)
+	fmt.Println("TOKEN:", skeelyTOKEN)
+	fmt.Println("REPOSITORY:", skeelyREPOSITORY)
+	fmt.Println("PULLREQUEST:", skeelyPULLREQUEST)
+
+	os.Exit(0)
+
+	fGitHubComment := flag.Bool("github-comment", false, "")
+	fGitHubPullRequest := flag.Int("github-pull-request", 0, "")
+	fGitHubRepository := flag.String("github-repository", "", "")
+	fGitHubToken := flag.String("github-token", "", "")
 	fHelp := flag.Bool("help", false, "")
-	fVersion := flag.Bool("version", false, "")
-	fComment := flag.Bool("comment", false, "")
 	fPath := flag.String("path", "", "")
-	fToken := flag.String("token", "", "")
-	fRepository := flag.String("repository", "", "")
-	fPullRequest := flag.Int("pull-request", 0, "")
+	fVersion := flag.Bool("version", false, "")
 	flag.Usage = func() { help(1) }
 	flag.Parse()
 
@@ -110,7 +125,7 @@ func main() {
 		}
 		fmt.Println()
 
-		if *fComment {
+		if *fGitHubComment {
 			if exitCode > 0 {
 				msgComment += fmt.Sprintf("Result of file: `%s`\\n", fileName)
 				msgComment += "Fix follow issues:\\n"
@@ -135,8 +150,8 @@ func main() {
 		}
 	})
 
-	if *fComment {
-		github.Comment(*fToken, *fRepository, *fPullRequest, msgComment)
+	if *fGitHubComment {
+		github.Comment(*fGitHubToken, *fGitHubRepository, *fGitHubPullRequest, msgComment)
 	}
 
 	os.Exit(exitCode)

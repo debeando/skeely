@@ -1,0 +1,22 @@
+name: skeely, MySQL Migration linter
+description: Parse and validate MySQL Migration
+author: debeando
+inputs:
+  path:
+    description: "Path of the directory containing the static assets."
+    required: true
+  comment:
+    description: "Send summary as comment into GitHub."
+    required: true
+  repository:
+    description: "Repository name."
+    required: true
+  pullrequest:
+    description: "Pull request number."
+    required: true
+  token:
+    description: "Token to auth."
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
