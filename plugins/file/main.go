@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"unicode/utf8"
 
-	"mylinter/registry"
+	"skeely/registry"
 )
 
 type Plugin struct {

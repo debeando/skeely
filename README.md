@@ -1,4 +1,4 @@
-# mylinter, is a MySQL Migration Lint
+# skeely, is a MySQL Migration Lint
 This tool help the data definition language review process for developers, the idea is to identifying some common and uncommon mistakes that are made during coding to optimize the data model.
 
 For example, analize this create table:
@@ -17,7 +17,7 @@ CREATE TABLE `userExternal` (
 If you lint this simple model with the follow command:
 
 ```bash
-mylinter --path=assets/examples/case01.sql
+skeely --path=assets/examples/case01.sql
 ```
 
 Have the follow output:
@@ -42,14 +42,14 @@ Have the follow output:
 ## Install
 
 ```bash
-bash < <(curl -s https://debeando.com/mylinter.sh)
+bash < <(curl -s https://debeando.com/skeely.sh)
 ```
 
 **NOTE:** Now, the install script support only Linux amd64.
 
 ## Configure
 
-This step is optional, but maybe need change default limits or ignore specific error code, this is the way: Is very easy to configure, only need to create file witch this name `.mylinter.yaml` on directory you have \*.sql, add folow lines and adjust by your preferences:
+This step is optional, but maybe need change default limits or ignore specific error code, this is the way: Is very easy to configure, only need to create file witch this name `.skeely.yaml` on directory you have \*.sql, add folow lines and adjust by your preferences:
 
 ```yaml
 ---

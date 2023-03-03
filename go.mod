@@ -1,4 +1,4 @@
-module mylinter
+module skeely
 
 go 1.19
 

@@ -3,8 +3,8 @@ package primary_key
 import (
 	"fmt"
 
-	"mylinter/common"
-	"mylinter/registry"
+	"skeely/common"
+	"skeely/registry"
 )
 
 type Plugin struct {

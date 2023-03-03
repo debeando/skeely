@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"mylinter/common"
+	"skeely/common"
 
 	"github.com/go-yaml/yaml"
 )
@@ -28,7 +28,7 @@ func (c *Config) setDefaults() {
 }
 
 func (c *Config) Load() error {
-	source, err := ioutil.ReadFile(".mylinter.yaml")
+	source, err := ioutil.ReadFile(".skeely.yaml")
 	if err != nil {
 		return nil
 	}

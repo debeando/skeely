@@ -1,7 +1,7 @@
 package table
 
 import (
-	"mylinter/common"
+	"skeely/common"
 )
 
 type Key struct {

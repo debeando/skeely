@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"mylinter/registry"
+	"skeely/registry"
 )
 
 type Plugin struct {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"mylinter/config"
-	"mylinter/registry"
+	"skeely/config"
+	"skeely/registry"
 )
 
 var cnf *config.Config

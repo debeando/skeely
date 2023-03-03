@@ -18,7 +18,7 @@ jobs:
       run: |
         go mod tidy
         go mod download
-        go build -o mylinter main.go
+        go build -o skeely main.go
 
     - name: Debug
       run: |
@@ -28,8 +28,8 @@ jobs:
 
     - name: Lint
       run: |
-        ./mylinter --path=assets/examples \
-                   --comment \
-                   --token=${{github.token}} \
-                   --repository=$GITHUB_REPOSITORY \
-                   --pull-request=${{github.event.pull_request.number}}
+        ./skeely --path=assets/examples \
+                 --comment \
+                 --token=${{github.token}} \
+                 --repository=$GITHUB_REPOSITORY \
+                 --pull-request=${{github.event.pull_request.number}}

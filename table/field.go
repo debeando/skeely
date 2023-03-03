@@ -3,7 +3,7 @@ package table
 import (
 	"strings"
 
-	"mylinter/common"
+	"skeely/common"
 )
 
 type Field struct {

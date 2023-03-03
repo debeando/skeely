@@ -1,7 +1,7 @@
 package registry
 
 import (
-	"mylinter/table"
+	"skeely/table"
 )
 
 type Creator func() Module

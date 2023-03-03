@@ -15,7 +15,7 @@ deps: ## Download dependencies
 
 build: ## Build binary for local operating system
 	@go generate ./...
-	@go build -o mylinter main.go
+	@go build -o skeely main.go
 
 clean: ## Remove build related file
 	@go clean
