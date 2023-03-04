@@ -94,16 +94,21 @@ func (gh *GitHub) OnActions() bool {
 
 func (gh *GitHub) BuildMessage() {
 	l := linter.GetInstance()
-	gh.Comment = "# Skeely summary\\n"
+	gh.Comment = "# Skeely summary:\\n"
+	gh.Comment += "Is a Schema Linter for MySQL, this tool help to identifying some common and uncommon mistakes on data model.\\n\\n"
 	for _, r := range l.Summary {
-		gh.Comment += fmt.Sprintf("Result of file: `%s`\\n", r.File)
+		gh.Comment += fmt.Sprintf("**Result of file:** `%s`\\n", r.File)
 		for _, m := range r.Messages {
 			gh.Comment += fmt.Sprintf("- **[%d]** %s\\n", m.Code, m.Message)
-
+		}
+		if len(r.Messages) == 0 {
+			gh.Comment += "- Looks ok.\\n\\n"
+		} else {
+			gh.Comment += "\\n"
 		}
 	}
 
-	fmt.Println(gh.Comment)
+	gh.Comment += "For more help, plese visit: https://github.com/debeando/skeely"
 }
 
 func (gh *GitHub) PushComment() error {

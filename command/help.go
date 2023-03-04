@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-const USAGE = `skeely %s Is a MySQL Migration Lint and this tool help to identifying some
-common and uncommon mistakes data model.
+const USAGE = `skeely %s Is a Schema Linter for MySQL, this tool help to identifying
+some common and uncommon mistakes on data model.
 
 USAGE:
 	skeely [--help | --path | --version]
@@ -14,9 +14,9 @@ USAGE:
 OPTIONS:
   --comment               Send summary as comment into GitHub.
   --help                  Show this help.
-  --path                  Path of the directory containing the *.sql
+  --path                  Path of the directory containing the *.sql to lint.
   --github-pull-request   Pull request number.
-  --github-repository     Repository name.
+  --github-repository     Repository path on github.
   --github-token          Token to auth in github.
   --version               Print version numbers.
 
@@ -30,10 +30,10 @@ EXAMPLES:
 
   # Lint and push summary as comment into GitHub Pull Request.
   $ skeely --path=assets/examples/case01.sql \
-             --github-comment \
-             --github-token=${{github.token}} \
-             --github-repository=$GITHUB_REPOSITORY \
-             --github-pull-request=${{github.event.pull_request.number}}
+           --github-comment \
+           --github-token=${{github.token}} \
+           --github-repository=$GITHUB_REPOSITORY \
+           --github-pull-request=${{github.event.pull_request.number}}
 
 For more help, plese visit: https://github.com/debeando/skeely
 `
