@@ -3,33 +3,14 @@ name: Lint
 on: [pull_request]
 jobs:
   test:
-    name: Lint assets examples
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout base branch
-      uses: actions/checkout@v3
-
-    - name: Set up Go
-      uses: actions/setup-go@v3
+    - uses: actions/checkout@v3
+    - uses: debeando/mylinter@main
       with:
-        go-version: 1.19
-
-    - name: Build
-      run: |
-        go mod tidy
-        go mod download
-        go build -o skeely main.go
-
-    - name: Debug
-      run: |
-        echo "Token: ${{github.token}}"
-        echo "Repository: $GITHUB_REPOSITORY"
-        echo "Pull Request: ${{ github.event.pull_request.number }}"
-
-    - name: Lint
-      run: |
-        ./skeely --path=assets/examples \
-                 --comment \
-                 --token=${{github.token}} \
-                 --repository=$GITHUB_REPOSITORY \
-                 --pull-request=${{github.event.pull_request.number}}
+        path: "assets/examples"
+        comment: true
+        repository: "debeando/skeely"
+        pullrequest: ${{github.event.pull_request.number}}
+        token: ${{github.token}}
