@@ -75,7 +75,7 @@ func (gh *GitHub) IsSet() bool {
 	if gh.PullRequest == 0 {
 		return false
 	}
-	if ! gh.Enable {
+	if !gh.Enable {
 		return false
 	}
 
@@ -99,7 +99,7 @@ func (gh *GitHub) BuildMessage() {
 		gh.Comment += fmt.Sprintf("Result of file: `%s`\\n", r.File)
 		for _, m := range r.Messages {
 			gh.Comment += fmt.Sprintf("- **[%d]** %s\\n", m.Code, m.Message)
-			
+
 		}
 	}
 

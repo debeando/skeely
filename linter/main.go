@@ -3,23 +3,23 @@ package linter
 import (
 	"skeely/common"
 	"skeely/config"
+	"skeely/directory"
 	"skeely/registry"
 	"skeely/table"
-	"skeely/directory"
 )
 
 type Linter struct {
-	Path     string
-	Summary  []Result
+	Path    string
+	Summary []Result
 }
 
 type Result struct {
-	File string
+	File     string
 	Messages []Message
 }
 
 type Message struct {
-	Code int
+	Code    int
 	Message string
 }
 
@@ -54,7 +54,7 @@ func (l *Linter) Run() {
 						continue
 					}
 
-					r.AddMessage(Message{Code: key+message.Code, Message: message.Message})
+					r.AddMessage(Message{Code: key + message.Code, Message: message.Message})
 				}
 			}
 		}
@@ -65,7 +65,6 @@ func (l *Linter) Run() {
 func (l *Linter) AddResult(r Result) {
 	l.Summary = append(l.Summary, r)
 }
-
 
 func (r *Result) AddMessage(m Message) {
 	r.Messages = append(r.Messages, m)
