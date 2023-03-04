@@ -34,6 +34,18 @@ func StringToInt(s string) int {
 	return i
 }
 
+func StringToBool(s string) bool {
+	b, _ := strconv.ParseBool(s)
+	return b
+}
+
+func StringIsEmpty(s string) bool {
+	if len(s) == 0 {
+		return true
+	}
+	return false
+}
+
 func Find(e, r string) [][]string {
 	return regexp.MustCompile(e).FindAllStringSubmatch(r, -1)
 }

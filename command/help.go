@@ -1,8 +1,8 @@
 package command
 
 import (
-  "fmt"
-  "os"
+	"fmt"
+	"os"
 )
 
 const USAGE = `skeely %s Is a MySQL Migration Lint and this tool help to identifying some
