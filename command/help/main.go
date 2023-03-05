@@ -1,8 +1,10 @@
-package command
+package help
 
 import (
 	"fmt"
 	"os"
+
+	"skeely/command/version"
 )
 
 const USAGE = `skeely %s Is a Schema Linter for MySQL, this tool help to identifying
@@ -14,7 +16,8 @@ USAGE:
 OPTIONS:
   --comment               Send summary as comment into GitHub.
   --help                  Show this help.
-  --path                  Path of the directory containing the *.sql to lint.
+  --path                  Path of the directory to start to find *.sql to lint.
+  --git                   Auto identifying git changed files, require --path option.
   --github-pull-request   Pull request number.
   --github-repository     Repository path on github.
   --github-token          Token to auth in github.
@@ -38,7 +41,7 @@ EXAMPLES:
 For more help, plese visit: https://github.com/debeando/skeely
 `
 
-func help(rc int) {
-	fmt.Printf(USAGE, VERSION)
+func Show(rc int) {
+	fmt.Printf(USAGE, version.VERSION)
 	os.Exit(rc)
 }

@@ -65,6 +65,15 @@ func StringIn(x, y string) bool {
 	return strings.Contains(strings.ToUpper(x), y)
 }
 
+func StringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+
 func UnduplicateArrayInt(intSlice []int) (list []int) {
 	keys := make(map[int]bool)
 

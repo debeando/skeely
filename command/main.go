@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"skeely/command/help"
+	"skeely/command/version"
 	"skeely/common/github"
 	"skeely/config"
 	"skeely/flags"
@@ -21,6 +23,7 @@ func Run() {
 
 	if gh.OnActions() {
 		l.Path = gh.Path
+		l.Git = gh.Git
 		l.Run()
 		gh.BuildMessage()
 		gh.PushComment()
@@ -29,12 +32,12 @@ func Run() {
 
 	switch {
 	case f.Version:
-		fmt.Println(VERSION)
+		fmt.Println(version.VERSION)
 		os.Exit(0)
 	case f.Help:
-		help(0)
+		help.Show(0)
 	case len(f.Path) == 0:
-		help(1)
+		help.Show(1)
 	}
 
 	err := c.Load()
@@ -44,6 +47,7 @@ func Run() {
 	}
 
 	l.Path = f.Path
+	l.Git = gh.Git
 	l.Run()
 
 	if gh.OnTerminal() {
@@ -56,5 +60,6 @@ func Run() {
 		for _, m := range r.Messages {
 			fmt.Println(fmt.Sprintf("- [%d] %s", m.Code, m.Message))
 		}
+		// TODO: Si el fichero esta bien, ponerlo.
 	}
 }

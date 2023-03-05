@@ -25,6 +25,7 @@ func (p *Plugin) Run(a registry.Arguments) []registry.Message {
 		{Code: 2, Message: "Invalid UTF-8 encoding."},
 		{Code: 3, Message: "No ending with ';'."},
 		{Code: 4, Message: "No ending with new line."},
+		// TODO: Code 5: You have many tables on single file.
 	}
 
 	p.NoEmpty()

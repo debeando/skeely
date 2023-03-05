@@ -6,5 +6,7 @@ ENV CGO_ENABLED=0
 RUN go get -d -v
 RUN go build -o /go/bin/skeely main.go
 FROM alpine:latest
+RUN apk update
+RUN apk add git
 COPY --from=builder /go/bin/skeely /skeely
 ENTRYPOINT ["/skeely"]

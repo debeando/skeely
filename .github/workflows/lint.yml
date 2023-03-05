@@ -9,8 +9,9 @@ jobs:
     - uses: actions/checkout@v3
     - uses: debeando/mylinter@main
       with:
-        path: "assets/examples"
+        path: "./"
+        git: true
         comment: true
-        repository: "debeando/skeely"
-        pullrequest: ${{github.event.pull_request.number}}
-        token: ${{github.token}}
+        repository: ${{ github.repository }}
+        pullrequest: ${{ github.event.pull_request.number }}
+        token: ${{ github.token }}

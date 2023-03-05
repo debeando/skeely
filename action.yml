@@ -5,6 +5,9 @@ inputs:
   path:
     description: "Path of the directory containing the static assets."
     required: true
+  git:
+    description: "Auto identifying git changed files."
+    required: true
   comment:
     description: "Send summary as comment into GitHub."
     required: true

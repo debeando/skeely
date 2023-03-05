@@ -1,5 +1,4 @@
 SHELL := /bin/bash
-BUILD_NUMBER := `date +%Y%m%d%H%M`
 GREEN := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
 RESET := $(shell tput -Txterm sgr0)

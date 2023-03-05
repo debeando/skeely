@@ -17,6 +17,7 @@ import (
 type GitHub struct {
 	Path        string
 	Enable      bool
+	Git         bool
 	Token       string
 	Repository  string
 	PullRequest int
@@ -38,6 +39,7 @@ func init() {
 func (gh *GitHub) Clear() {
 	gh.Path = ""
 	gh.Enable = false
+	gh.Git = false
 	gh.Token = ""
 	gh.Repository = ""
 	gh.PullRequest = 0
@@ -47,6 +49,7 @@ func (gh *GitHub) GetFlags() {
 	f := flags.GetInstance()
 	gh.Clear()
 	gh.Path = f.Path
+	gh.Git = f.Git
 	gh.Enable = f.GitHubComment
 	gh.Token = f.GitHubToken
 	gh.Repository = f.GitHubRepository
@@ -57,6 +60,7 @@ func (gh *GitHub) GetInputs() {
 	gh.Clear()
 	gh.Path = os.Getenv("INPUT_PATH")
 	gh.Enable = common.StringToBool(os.Getenv("INPUT_COMMENT"))
+	gh.Git = common.StringToBool(os.Getenv("INPUT_GIT"))
 	gh.Token = os.Getenv("INPUT_TOKEN")
 	gh.Repository = os.Getenv("INPUT_REPOSITORY")
 	gh.PullRequest = common.StringToInt(os.Getenv("INPUT_PULLREQUEST"))
@@ -112,6 +116,8 @@ func (gh *GitHub) BuildMessage() {
 }
 
 func (gh *GitHub) PushComment() error {
+	// TODO: Sino hay mensage, ignorar.
+
 	requestURL := fmt.Sprintf("https://api.github.com/repos/%s/issues/%d/comments", gh.Repository, gh.PullRequest)
 	jsonBody := []byte(fmt.Sprintf(`{"body": "%s"}`, gh.Comment))
 	bodyReader := bytes.NewReader(jsonBody)

@@ -10,6 +10,7 @@ import (
 
 type Linter struct {
 	Path    string
+	Git     bool
 	Summary []Result
 }
 
@@ -36,7 +37,7 @@ func (l *Linter) Run() {
 	cnf := config.GetInstance()
 	cnf.Load()
 
-	directory.Explore(l.Path, func(fileName, fileContent string) {
+	directory.Explore(l.Path, l.Git, func(fileName, fileContent string) {
 		r := Result{File: fileName}
 		t := table.Table{}
 
