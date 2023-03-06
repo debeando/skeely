@@ -3,22 +3,22 @@ description: Parse and validate MySQL Migration
 author: debeando
 inputs:
   path:
-    description: "Path of the directory containing the static assets."
+    description: "Path of the directory to start to find *.sql to lint."
     required: true
-  git:
-    description: "Auto identifying git changed files."
+  files:
+    description: "List of files to lint, separated by space."
     required: true
   comment:
     description: "Send summary as comment into GitHub."
     required: true
   repository:
-    description: "Repository name."
+    description: "Repository path on github."
     required: true
   pullrequest:
     description: "Pull request number."
     required: true
   token:
-    description: "Token to auth."
+    description: "Token to auth in github."
     required: true
 runs:
   using: 'docker'

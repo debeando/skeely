@@ -7,10 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: debeando/mylinter@main
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v35
       with:
-        path: "./"
-        git: true
+        files: |
+          **/*.sql
+    - uses: debeando/skeely@main
+      with:
+        files: ${{ steps.changed-files.outputs.all_changed_files }}
         comment: true
         repository: ${{ github.repository }}
         pullrequest: ${{ github.event.pull_request.number }}

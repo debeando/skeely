@@ -6,22 +6,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"time"
 
-	"skeely/common"
 	"skeely/flags"
 	"skeely/linter"
 )
 
 type GitHub struct {
-	Path        string
-	Enable      bool
-	Git         bool
-	Token       string
-	Repository  string
-	PullRequest int
-	Comment     string
+	Comment string
 }
 
 var Client HTTPClient
@@ -36,68 +28,9 @@ func init() {
 	}
 }
 
-func (gh *GitHub) Clear() {
-	gh.Path = ""
-	gh.Enable = false
-	gh.Git = false
-	gh.Token = ""
-	gh.Repository = ""
-	gh.PullRequest = 0
-}
-
-func (gh *GitHub) GetFlags() {
-	f := flags.GetInstance()
-	gh.Clear()
-	gh.Path = f.Path
-	gh.Git = f.Git
-	gh.Enable = f.GitHubComment
-	gh.Token = f.GitHubToken
-	gh.Repository = f.GitHubRepository
-	gh.PullRequest = f.GitHubPullRequest
-}
-
-func (gh *GitHub) GetInputs() {
-	gh.Clear()
-	gh.Path = os.Getenv("INPUT_PATH")
-	gh.Enable = common.StringToBool(os.Getenv("INPUT_COMMENT"))
-	gh.Git = common.StringToBool(os.Getenv("INPUT_GIT"))
-	gh.Token = os.Getenv("INPUT_TOKEN")
-	gh.Repository = os.Getenv("INPUT_REPOSITORY")
-	gh.PullRequest = common.StringToInt(os.Getenv("INPUT_PULLREQUEST"))
-}
-
-func (gh *GitHub) IsSet() bool {
-	if common.StringIsEmpty(gh.Path) {
-		return false
-	}
-	if common.StringIsEmpty(gh.Token) {
-		return false
-	}
-	if common.StringIsEmpty(gh.Repository) {
-		return false
-	}
-	if gh.PullRequest == 0 {
-		return false
-	}
-	if !gh.Enable {
-		return false
-	}
-
-	return true
-}
-
-func (gh *GitHub) OnTerminal() bool {
-	gh.GetFlags()
-	return gh.IsSet()
-}
-
-func (gh *GitHub) OnActions() bool {
-	gh.GetInputs()
-	return gh.IsSet()
-}
-
 func (gh *GitHub) BuildMessage() {
 	l := linter.GetInstance()
+
 	gh.Comment = "# Skeely summary:\\n"
 	gh.Comment += "Is a Schema Linter for MySQL, this tool help to identifying some common and uncommon mistakes on data model.\\n\\n"
 	for _, r := range l.Summary {
@@ -116,14 +49,22 @@ func (gh *GitHub) BuildMessage() {
 }
 
 func (gh *GitHub) PushComment() error {
-	// TODO: Sino hay mensage, ignorar.
+	f := flags.GetInstance()
 
-	requestURL := fmt.Sprintf("https://api.github.com/repos/%s/issues/%d/comments", gh.Repository, gh.PullRequest)
+	if !f.GitHubComment {
+		return nil
+	}
+
+	if len(gh.Comment) == 0 {
+		return nil
+	}
+
+	requestURL := fmt.Sprintf("https://api.github.com/repos/%s/issues/%d/comments", f.GitHubRepository, f.GitHubPullRequest)
 	jsonBody := []byte(fmt.Sprintf(`{"body": "%s"}`, gh.Comment))
 	bodyReader := bytes.NewReader(jsonBody)
 	req, err := http.NewRequest(http.MethodPost, requestURL, bodyReader)
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", gh.Token))
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", f.GitHubToken))
 
 	res, err := Client.Do(req)
 	if err != nil {

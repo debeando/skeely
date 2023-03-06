@@ -11,12 +11,13 @@ const USAGE = `skeely %s Is a Schema Linter for MySQL, this tool help to identif
 some common and uncommon mistakes on data model.
 
 USAGE:
-	skeely [--help | --path | --version]
+	skeely [--help | [ --path | --files ] | --version]
 
 OPTIONS:
   --comment               Send summary as comment into GitHub.
   --help                  Show this help.
   --path                  Path of the directory to start to find *.sql to lint.
+  --files                 List of files to lint, separated by space.
   --git                   Auto identifying git changed files, require --path option.
   --github-pull-request   Pull request number.
   --github-repository     Repository path on github.
