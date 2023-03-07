@@ -15,13 +15,14 @@ USAGE:
 
 OPTIONS:
   --comment               Send summary as comment into GitHub.
-  --help                  Show this help.
-  --path                  Path of the directory to start to find *.sql to lint.
   --files                 List of files to lint, separated by space.
   --git                   Auto identifying git changed files, require --path option.
   --github-pull-request   Pull request number.
   --github-repository     Repository path on github.
   --github-token          Token to auth in github.
+  --help                  Show this help.
+  --ignore                List of codes to ignore for all tables, separated by comma.
+  --path                  Path of the directory to start to find *.sql to lint.
   --version               Print version numbers.
 
 EXAMPLES:
@@ -30,7 +31,10 @@ EXAMPLES:
   $ skeely --path=assets/examples/
 
   # Lint specific file
-  $ skeely --path=assets/examples/case01.sql
+  $ skeely --files=assets/examples/case01.sql
+
+  # Lint specific file and ignore codes
+  $ skeely --files=assets/examples/case01.sql --ignore=103,104,305,406
 
   # Lint and push summary as comment into GitHub Pull Request.
   $ skeely --path=assets/examples/case01.sql \

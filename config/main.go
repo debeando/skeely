@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"skeely/common"
+	"skeely/flags"
 
 	"github.com/go-yaml/yaml"
 )
@@ -45,7 +46,7 @@ func (c *Config) Load() error {
 func (c *Config) IgnoreCodes(table_name string) (errors []int) {
 	errors = append(errors, c.getIgnoreByTable(table_name)...)
 	errors = append(errors, c.getIgnoreGeneral()...)
-	errors = common.UnduplicateArrayInt(errors)
+	errors = common.UnduplicateSliceInt(errors)
 
 	return errors
 }
@@ -53,7 +54,7 @@ func (c *Config) IgnoreCodes(table_name string) (errors []int) {
 func (c *Config) getIgnoreByTable(table_name string) (errors []int) {
 	for index := range c.Tables {
 		if c.Tables[index].Name == table_name {
-			return common.StringToArrayInt(c.Tables[index].Ignore)
+			return common.StringToSliceInt(c.Tables[index].Ignore)
 		}
 	}
 
@@ -61,5 +62,12 @@ func (c *Config) getIgnoreByTable(table_name string) (errors []int) {
 }
 
 func (c *Config) getIgnoreGeneral() []int {
-	return common.StringToArrayInt(c.Ignore)
+	f := flags.GetInstance()
+
+	return common.UnduplicateSliceInt(
+		common.MergeSliceInt(
+			common.StringToSliceInt(f.Ignore),
+			common.StringToSliceInt(c.Ignore),
+		),
+	)
 }

@@ -16,7 +16,7 @@ func StringToArray(v string) (values []string) {
 	return values
 }
 
-func StringToArrayInt(v string) (values []int) {
+func StringToSliceInt(v string) (values []int) {
 	for _, value := range strings.Split(v, ",") {
 		if len(value) > 0 {
 			values = append(values, StringToInt(strings.Trim(value, " ")))
@@ -74,7 +74,7 @@ func StringInSlice(a string, list []string) bool {
 	return false
 }
 
-func UnduplicateArrayInt(intSlice []int) (list []int) {
+func UnduplicateSliceInt(intSlice []int) (list []int) {
 	keys := make(map[int]bool)
 
 	for _, entry := range intSlice {
@@ -87,7 +87,7 @@ func UnduplicateArrayInt(intSlice []int) (list []int) {
 	return list
 }
 
-func IntInArrayInt(slice []int, value int) bool {
+func IntInSliceInt(slice []int, value int) bool {
 	for index := range slice {
 		if slice[index] == value {
 			return true
@@ -95,4 +95,8 @@ func IntInArrayInt(slice []int, value int) bool {
 	}
 
 	return false
+}
+
+func MergeSliceInt(a, b []int) []int {
+	return append(a, b...)
 }

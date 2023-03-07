@@ -8,6 +8,9 @@ inputs:
   files:
     description: "List of files to lint, separated by space."
     required: true
+  ignore:
+    description: "List of codes to ignore for all tables."
+    required: true
   comment:
     description: "Send summary as comment into GitHub."
     required: true

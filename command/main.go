@@ -34,6 +34,8 @@ func Run() {
 		help.Show(0)
 	case len(f.Path) > 0 && len(f.Files) > 0:
 		help.Show(1)
+	case len(f.Path) == 0 && len(f.Files) == 0:
+		help.Show(0)
 	}
 
 	l.Run()
