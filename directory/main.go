@@ -20,41 +20,12 @@ func Explore(doFile func(fileName, fileContent string)) {
 	f := flags.GetInstance()
 
 	var files []string
-	// e, _ := exists(path)
-	// // fmt.Println(e, err)
-
-	// if e == false {
-	// 	files_temp := strings.Split(path, " ")
-	// 	for _, file := range files_temp {
-	// 		e, _ = exists(file)
-	// 		if e {
-	// 			files = append(files, file)
-	// 		}
-	// 		// fmt.Println(e)
-	// 	}
-
-	// 	path = "."
-	// }
-
-	// if git {
-	// 	gitFiles = GitChangedFiles()
-	// 	fmt.Println(gitFiles)
-	// }
 
 	if exists(f.Path) {
 		filepath.Walk(f.Path, func(path string, info os.FileInfo, err error) error {
 			if filepath.Ext(path) == ".sql" {
-				// fmt.Println(path)
-				// if common.StringInSlice(path, files) {
-				// 	fmt.Println("match...")
-				// // 	data, _ := ReadFile(path)
-				// // 	doFile(path, data)
-				// }
-				// if !git {
 				data, _ := ReadFile(path)
 				doFile(path, data)
-				// fmt.Println("Analizo...")
-				// }
 			}
 			return nil
 		})
@@ -90,4 +61,3 @@ func exists(path string) bool {
 }
 
 // TODO: cambiar el nombre de directory to algo....
-// TODO: poner un nuevo arg que sea files

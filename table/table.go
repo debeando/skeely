@@ -43,27 +43,27 @@ func (t *Table) GetName() {
 }
 
 func (t *Table) GetEngine() {
-	ex := `ENGINE=(?P<Engine>\w+)`
+	ex := `\sENGINE=(?P<Engine>\w+)`
 	t.Engine = common.FindMatchOne(ex, t.Raw, 1)
 }
 
 func (t *Table) GetCharset() {
-	ex := `DEFAULT CHARSET=(?P<Charset>\w+)`
+	ex := `\sDEFAULT CHARSET=(?P<Charset>\w+)`
 	t.Charset = common.FindMatchOne(ex, t.Raw, 1)
 }
 
 func (t *Table) GetCollate() {
-	ex := `COLLATE=(?P<Collate>\w+)`
+	ex := `\sCOLLATE=(?P<Collate>\w+)`
 	t.Collate = common.FindMatchOne(ex, t.Raw, 1)
 }
 
 func (t *Table) GetRowFormat() {
-	ex := `ROW_FORMAT=(?P<RowFormat>\w+)`
+	ex := `\sROW_FORMAT=(?P<RowFormat>\w+)`
 	t.RowFormat = common.FindMatchOne(ex, t.Raw, 1)
 }
 
 func (t *Table) GetComment() {
-	ex := `COMMENT='(?P<Comment>.+)'`
+	ex := `\sCOMMENT='(?P<Comment>.+)'`
 	t.Comment = common.FindMatchOne(ex, t.Raw, 1)
 }
 
