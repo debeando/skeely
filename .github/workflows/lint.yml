@@ -16,6 +16,7 @@ jobs:
     - uses: debeando/skeely@main
       with:
         files: ${{ steps.changed-files.outputs.all_changed_files }}
+        ignore: 103,104,305,406
         comment: true
         repository: ${{ github.repository }}
         pullrequest: ${{ github.event.pull_request.number }}

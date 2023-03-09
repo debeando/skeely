@@ -48,7 +48,7 @@ func (l *Linter) Run() {
 				messages := plugin.Run(registry.Arguments{Path: fileName, Table: t})
 
 				for _, message := range messages {
-					if common.IntInArrayInt(cnf.IgnoreCodes(t.Name), key+message.Code) {
+					if common.IntInSliceInt(cnf.IgnoreCodes(t.Name), key+message.Code) {
 						continue
 					}
 

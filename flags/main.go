@@ -15,6 +15,7 @@ type Flags struct {
 	GitHubRepository  string
 	GitHubToken       string
 	Help              bool
+	Ignore            string
 	Path              string
 	Version           bool
 }
@@ -35,9 +36,10 @@ func (f *Flags) Load() {
 	fGitHubRepository := flag.String("github-repository", "", "")
 	fGitHubToken := flag.String("github-token", "", "")
 	fHelp := flag.Bool("help", false, "")
+	fIgnore := flag.String("ignore", "", "")
+	flag.Usage = func() { help.Show(1) }
 	fPath := flag.String("path", "", "")
 	fVersion := flag.Bool("version", false, "")
-	flag.Usage = func() { help.Show(1) }
 	flag.Parse()
 
 	f.Files = *fFiles
@@ -46,11 +48,16 @@ func (f *Flags) Load() {
 	f.GitHubRepository = *fGitHubRepository
 	f.GitHubToken = *fGitHubToken
 	f.Help = *fHelp
+	f.Ignore = *fIgnore
 	f.Path = *fPath
 	f.Version = *fVersion
 
 	if len(f.Files) == 0 && len(os.Getenv("INPUT_FILES")) > 0 {
 		f.Files = os.Getenv("INPUT_FILES")
+	}
+
+	if len(f.Ignore) == 0 && len(os.Getenv("INPUT_IGNORE")) > 0 {
+		f.Ignore = os.Getenv("INPUT_IGNORE")
 	}
 
 	if len(f.Path) == 0 && len(os.Getenv("INPUT_PATH")) > 0 {
