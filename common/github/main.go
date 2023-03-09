@@ -31,6 +31,10 @@ func init() {
 func (gh *GitHub) BuildMessage() {
 	l := linter.GetInstance()
 
+	if len(l.Summary) == 0 {
+		return nil
+	}
+
 	gh.Comment = "# Skeely summary:\\n"
 	gh.Comment += "Is a Schema Linter for MySQL, this tool help to identifying some common and uncommon mistakes on data model.\\n\\n"
 	for _, r := range l.Summary {

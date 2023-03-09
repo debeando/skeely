@@ -47,6 +47,8 @@ func Run() {
 		for _, m := range r.Messages {
 			fmt.Println(fmt.Sprintf("- [%d] %s", m.Code, m.Message))
 		}
-		// TODO: Si el fichero esta bien, ponerlo.
+		if len(r.Messages) == 0 {
+			fmt.Println("- Looks ok.")
+		}
 	}
 }

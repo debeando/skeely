@@ -1,14 +1,12 @@
 package directory
 
 import (
-	// "fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"skeely/flags"
-	// "skeely/common"
 )
 
 func ReadFile(filePath string) (string, error) {
@@ -59,5 +57,3 @@ func exists(path string) bool {
 	}
 	return false
 }
-
-// TODO: cambiar el nombre de directory to algo....
