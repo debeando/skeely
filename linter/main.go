@@ -4,66 +4,48 @@ import (
 	"skeely/common"
 	"skeely/config"
 	"skeely/directory"
+	"skeely/message"
 	"skeely/registry"
 	"skeely/table"
 )
 
-type Linter struct {
-	Summary []Result
-}
-
-type Result struct {
-	File     string
-	Messages []Message
-}
-
-type Message struct {
-	Code    int
-	Message string
-}
-
-var instance *Linter
-
-func GetInstance() *Linter {
-	if instance == nil {
-		instance = &Linter{}
-	}
-	return instance
-}
-
-func (l *Linter) Run() {
+func Run() (allMessages message.Plugins) {
 	cnf := config.GetInstance()
 
-	directory.Explore(func(fileName, fileContent string) {
-		r := Result{File: fileName}
-		t := table.Table{}
+	directory.Iterator(func(fileName, fileContent string) {
+		pluginResult := message.Plugin{File: fileName}
+		tbl := table.Table{}
 
-		if t.Parser(fileContent) != nil {
+		if tbl.Parser(fileContent) != nil {
 			return
 		}
 
-		for key := range registry.Plugins {
-			if creator, ok := registry.Plugins[key]; ok {
-				plugin := creator()
-				messages := plugin.Run(registry.Arguments{Path: fileName, Table: t})
+		// plugins inputs Iterator
+		registry.Iterator(func(index int, creator registry.Creator) {
+			// Create a plugin:
+			plugin := creator()
 
-				for _, message := range messages {
-					if common.IntInSliceInt(cnf.IgnoreCodes(t.Name), key+message.Code) {
-						continue
-					}
+			// Execute the plugin:
+			messages := plugin.Run(
+				registry.Arguments{
+					Path:  fileName,
+					Table: tbl,
+				})
 
-					r.AddMessage(Message{Code: key + message.Code, Message: message.Message})
+			// Process plugin output:
+			messages.Iterator(func(msg message.Message) {
+				if common.IntInSliceInt(cnf.IgnoreCodes(tbl.Name), index+msg.Code) {
+					return
 				}
-			}
-		}
-		l.AddResult(r)
+				pluginResult.Add(message.Message{
+					Code:    index + msg.Code,
+					Message: msg.Message,
+				})
+			})
+		})
+
+		allMessages.Add(pluginResult)
 	})
-}
 
-func (l *Linter) AddResult(r Result) {
-	l.Summary = append(l.Summary, r)
-}
-
-func (r *Result) AddMessage(m Message) {
-	r.Messages = append(r.Messages, m)
+	return allMessages
 }

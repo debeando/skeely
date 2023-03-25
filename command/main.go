@@ -7,6 +7,7 @@ import (
 	"skeely/command/help"
 	"skeely/command/version"
 	"skeely/common/github"
+	"skeely/common/terminal"
 	"skeely/config"
 	"skeely/flags"
 	"skeely/linter"
@@ -22,7 +23,6 @@ func Run() {
 		fmt.Println(err)
 		os.Exit(2)
 	}
-	l := linter.GetInstance()
 	f := flags.GetInstance()
 	f.Load()
 
@@ -38,17 +38,10 @@ func Run() {
 		help.Show(0)
 	}
 
-	l.Run()
-	gh.BuildMessage()
-	gh.PushComment()
+	msgPlugins := linter.Run()
 
-	for _, r := range l.Summary {
-		fmt.Println(fmt.Sprintf("> File: %s", r.File))
-		for _, m := range r.Messages {
-			fmt.Println(fmt.Sprintf("- [%d] %s", m.Code, m.Message))
-		}
-		if len(r.Messages) == 0 {
-			fmt.Println("- Looks ok.")
-		}
-	}
+	gh.Comment(msgPlugins)
+	gh.Push()
+
+	terminal.Print(msgPlugins)
 }
