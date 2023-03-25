@@ -32,7 +32,7 @@ func (gh *GitHub) BuildMessage() {
 	l := linter.GetInstance()
 
 	if len(l.Summary) == 0 {
-		return nil
+		return
 	}
 
 	gh.Comment = "# Skeely summary:\\n"
