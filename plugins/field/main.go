@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"skeely/config"
+	"skeely/message"
 	"skeely/registry"
 )
 
@@ -12,8 +13,8 @@ var cnf *config.Config
 
 type Plugin struct {
 	Arguments registry.Arguments
-	Messages  []registry.Message
-	Incidents []registry.Message
+	Messages  message.Messages
+	Incidents message.Plugin
 }
 
 func init() {
@@ -23,9 +24,9 @@ func init() {
 	cnf.Load()
 }
 
-func (p *Plugin) Run(a registry.Arguments) []registry.Message {
+func (p *Plugin) Run(a registry.Arguments) message.Plugin {
 	p.Arguments = a
-	p.Messages = []registry.Message{
+	p.Messages = []message.Message{
 		{Code: 1, Message: "Table without fields."},
 		{Code: 2, Message: "Table with many fields."},
 		{Code: 3, Message: "Field name is to large, max 40: %s"},
@@ -60,10 +61,10 @@ func (p *Plugin) GetMessage(id int) string {
 }
 
 func (p *Plugin) AddMessage(id int, vals ...any) {
-	msg := registry.Message{Code: id}
-	msg.Message = fmt.Sprintf(p.GetMessage(id), vals...)
-
-	p.Incidents = append(p.Incidents, msg)
+	p.Incidents.Add(message.Message{
+		Code:    id,
+		Message: fmt.Sprintf(p.GetMessage(id), vals...),
+	})
 }
 
 func (p *Plugin) Empty() {

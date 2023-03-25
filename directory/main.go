@@ -1,14 +1,12 @@
 package directory
 
 import (
-	// "fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"skeely/flags"
-	// "skeely/common"
 )
 
 func ReadFile(filePath string) (string, error) {
@@ -16,7 +14,7 @@ func ReadFile(filePath string) (string, error) {
 	return string(body), err
 }
 
-func Explore(doFile func(fileName, fileContent string)) {
+func Iterator(doIterator func(fileName, fileContent string)) {
 	f := flags.GetInstance()
 
 	var files []string
@@ -25,7 +23,7 @@ func Explore(doFile func(fileName, fileContent string)) {
 		filepath.Walk(f.Path, func(path string, info os.FileInfo, err error) error {
 			if filepath.Ext(path) == ".sql" {
 				data, _ := ReadFile(path)
-				doFile(path, data)
+				doIterator(path, data)
 			}
 			return nil
 		})
@@ -44,7 +42,7 @@ func Explore(doFile func(fileName, fileContent string)) {
 
 		for _, file := range files {
 			data, _ := ReadFile(file)
-			doFile(file, data)
+			doIterator(file, data)
 		}
 	}
 }
@@ -59,5 +57,3 @@ func exists(path string) bool {
 	}
 	return false
 }
-
-// TODO: cambiar el nombre de directory to algo....

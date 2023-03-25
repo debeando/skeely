@@ -4,22 +4,23 @@ import (
 	"fmt"
 
 	"skeely/common"
+	"skeely/message"
 	"skeely/registry"
 )
 
 type Plugin struct {
 	Arguments registry.Arguments
-	Messages  []registry.Message
-	Incidents []registry.Message
+	Messages  message.Messages
+	Incidents message.Plugin
 }
 
 func init() {
 	registry.Add(500, func() registry.Module { return &Plugin{} })
 }
 
-func (p *Plugin) Run(a registry.Arguments) []registry.Message {
+func (p *Plugin) Run(a registry.Arguments) message.Plugin {
 	p.Arguments = a
-	p.Messages = []registry.Message{
+	p.Messages = []message.Message{
 		{Code: 1, Message: "Table no have Primary Key."},
 		{Code: 2, Message: "Primary Key field name should by id: %s"},
 		{Code: 3, Message: "Primary Key field should by NOT NULL: %s"},
@@ -48,10 +49,10 @@ func (p *Plugin) GetMessage(id int) string {
 }
 
 func (p *Plugin) AddMessage(id int, vals ...any) {
-	msg := registry.Message{Code: id}
-	msg.Message = fmt.Sprintf(p.GetMessage(id), vals...)
-
-	p.Incidents = append(p.Incidents, msg)
+	p.Incidents.Add(message.Message{
+		Code:    id,
+		Message: fmt.Sprintf(p.GetMessage(id), vals...),
+	})
 }
 
 func (p *Plugin) Empty() {

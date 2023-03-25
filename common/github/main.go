@@ -9,11 +9,11 @@ import (
 	"time"
 
 	"skeely/flags"
-	"skeely/linter"
+	"skeely/message"
 )
 
 type GitHub struct {
-	Comment string
+	CommentText string
 }
 
 var Client HTTPClient
@@ -28,39 +28,45 @@ func init() {
 	}
 }
 
-func (gh *GitHub) BuildMessage() {
-	l := linter.GetInstance()
+func (gh *GitHub) IsSet() bool {
+	return false
+}
 
-	gh.Comment = "# Skeely summary:\\n"
-	gh.Comment += "Is a Schema Linter for MySQL, this tool help to identifying some common and uncommon mistakes on data model.\\n\\n"
-	for _, r := range l.Summary {
-		gh.Comment += fmt.Sprintf("**Result of file:** `%s`\\n", r.File)
+func (gh *GitHub) Comment(messages message.Plugins) {
+	if !messages.IsSet() {
+		return
+	}
+
+	gh.CommentText = "# Skeely summary:\\n"
+	gh.CommentText += "Is a Schema Linter for MySQL, this tool help to identifying some common and uncommon mistakes on data model.\\n\\n"
+	for _, r := range messages {
+		gh.CommentText += fmt.Sprintf("**Result of file:** `%s`\\n", r.File)
 		for _, m := range r.Messages {
-			gh.Comment += fmt.Sprintf("- **[%d]** %s\\n", m.Code, m.Message)
+			gh.CommentText += fmt.Sprintf("- **[%d]** %s\\n", m.Code, m.Message)
 		}
 		if len(r.Messages) == 0 {
-			gh.Comment += "- Looks ok.\\n\\n"
+			gh.CommentText += "- Looks ok.\\n\\n"
 		} else {
-			gh.Comment += "\\n"
+			gh.CommentText += "\\n"
 		}
 	}
 
-	gh.Comment += "For more help, plese visit: https://github.com/debeando/skeely"
+	gh.CommentText += "For more help, plese visit: https://github.com/debeando/skeely"
 }
 
-func (gh *GitHub) PushComment() error {
+func (gh *GitHub) Push() error {
 	f := flags.GetInstance()
 
 	if !f.GitHubComment {
 		return nil
 	}
 
-	if len(gh.Comment) == 0 {
+	if len(gh.CommentText) == 0 {
 		return nil
 	}
 
 	requestURL := fmt.Sprintf("https://api.github.com/repos/%s/issues/%d/comments", f.GitHubRepository, f.GitHubPullRequest)
-	jsonBody := []byte(fmt.Sprintf(`{"body": "%s"}`, gh.Comment))
+	jsonBody := []byte(fmt.Sprintf(`{"body": "%s"}`, gh.CommentText))
 	bodyReader := bytes.NewReader(jsonBody)
 	req, err := http.NewRequest(http.MethodPost, requestURL, bodyReader)
 	req.Header.Add("Accept", "application/json")

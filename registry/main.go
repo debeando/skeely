@@ -1,6 +1,7 @@
 package registry
 
 import (
+	"skeely/message"
 	"skeely/table"
 )
 
@@ -13,15 +14,18 @@ type Arguments struct {
 	Table table.Table
 }
 
-type Message struct {
-	Code    int
-	Message string
-}
-
 type Module interface {
-	Run(Arguments) []Message
+	Run(Arguments) message.Plugin
 }
 
 func Add(id int, creator Creator) {
 	Plugins[id] = creator
+}
+
+func Iterator(doIterator func(int, Creator)) {
+	for index := range Plugins {
+		if creator, ok := Plugins[index]; ok {
+			doIterator(index, creator)
+		}
+	}
 }

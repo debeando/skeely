@@ -9,4 +9,4 @@ CREATE TABLE `properties_email_templates` (
   KEY `property_idx` (`property_id`),
   KEY `created_at_idx` (`created_at`),
   KEY `email_template_typex_idx` (`email_template_type`)
-) ENGINE=InnoDB ADEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;

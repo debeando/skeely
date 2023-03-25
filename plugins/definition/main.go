@@ -5,22 +5,23 @@ import (
 	"regexp"
 	"strings"
 
+	"skeely/message"
 	"skeely/registry"
 )
 
 type Plugin struct {
 	Arguments registry.Arguments
-	Messages  []registry.Message
-	Incidents []registry.Message
+	Messages  message.Messages
+	Incidents message.Plugin
 }
 
 func init() {
 	registry.Add(300, func() registry.Module { return &Plugin{} })
 }
 
-func (p *Plugin) Run(a registry.Arguments) []registry.Message {
+func (p *Plugin) Run(a registry.Arguments) message.Plugin {
 	p.Arguments = a
-	p.Messages = []registry.Message{
+	p.Messages = message.Messages{
 		{Code: 1, Message: "This is not a table definition."},
 		{Code: 2, Message: "Table engine is not InnoDB."},
 		{Code: 3, Message: "Table charset is not set to use UTF8."},
@@ -59,10 +60,10 @@ func (p *Plugin) GetMessage(id int) string {
 }
 
 func (p *Plugin) AddMessage(id int, vals ...any) {
-	msg := registry.Message{Code: id}
-	msg.Message = fmt.Sprintf(p.GetMessage(id), vals...)
-
-	p.Incidents = append(p.Incidents, msg)
+	p.Incidents.Add(message.Message{
+		Code:    id,
+		Message: fmt.Sprintf(p.GetMessage(id), vals...),
+	})
 }
 
 func (p *Plugin) IsTable() {
