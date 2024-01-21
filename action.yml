@@ -1,6 +1,6 @@
 name: skeely, MySQL Migration linter
 description: Parse and validate MySQL Migration
-author: debeando
+author: DeBeAndo
 inputs:
   path:
     description: "Path of the directory to start to find *.sql to lint."
