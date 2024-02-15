@@ -9,7 +9,7 @@ import (
 	"skeely/common"
 	"skeely/flags"
 
-	"github.com/go-yaml/yaml"
+	"gopkg.in/yaml.v3"
 )
 
 var instance *Config
